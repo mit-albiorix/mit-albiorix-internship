@@ -1,0 +1,136 @@
+.container{
+    /* width: 10p; */
+    height: 100%;
+}
+
+.firstsection{
+    height: 76px;
+}
+.logo{
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    top: 18px;
+    left: 70.57px;
+    
+}
+#whitespace{
+    margin-top: 8px;
+    margin-left: 7px;
+}
+.logo:hover{
+    color: blue;
+}
+#img{
+    height:40px ;
+    width: 36px ;
+    
+}
+
+#img:hover{
+    color: blue;
+}
+
+.nav{
+    /* display: inline; */
+    position: absolute;
+    top: 25px;
+    right: 70.57px;
+    display: flex;
+    flex-direction: row;
+ 
+}
+
+
+.nav li{
+    padding-right: 20px;
+    list-style: none;
+}
+
+.nav li:hover{
+    
+    text-decoration: underline;
+    text-decoration-color: blue;
+}
+
+#startnow{
+    background-color: #1A75FF;
+    padding: 10px 20px;
+    border-radius: 8px;
+    margin-top: -8px;
+}
+
+.secondsection{
+    height: 770px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    /* margin-bottom: 15px; */
+}
+
+.content{
+    margin-top: -50px;
+    width: 490px;
+    padding-left: 33px;
+}
+
+.secondsectionimage{
+   
+    width: 500px;
+    height:700px;
+    padding-left: 352px;
+    margin-top: 65px;
+}
+
+.secondsectionbuttuon{
+    border-radius: 8px;
+    margin-top: 32px;
+}
+
+#para{
+    margin-top: 20px;
+
+}
+
+
+#creditcard{
+    position: absolute;
+    top: 620px;
+    left: 926px;
+
+    right: 160px;
+
+    bottom: 15px;
+}
+
+
+.thirdsection{
+    margin-top: 50px;
+}
+#features{
+    color: #0052CC;
+}
+.header{
+    text-align: center;
+}
+
+.thirdsectionbody{
+    margin-left: 45px;
+    width: 500px;
+}
+.thirdsectioncontent{
+    margin-top: 167px;
+
+}
+.content1{
+    border: 2px solid black;
+    padding: 24px;
+}
+
+.content2{
+
+    border: 2px solid black;
+    padding: 24px;
+}
+

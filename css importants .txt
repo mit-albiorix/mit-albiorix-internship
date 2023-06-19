@@ -1,0 +1,17 @@
+ css importants : 
+
+ flex box : container
+
+       1. align-items : stretch => it stretch elemnt to cover whole          		    container(div)
+
+       2. align-items : baseline => it makes elemets in center even if size of 	    all elements is diffrent
+
+       3. align-content : 
+
+
+
+
+need perticular elements of some width then give flex : 50% this way
+
+
+line height :10 px;
