@@ -1,0 +1,2 @@
+1. today completed budget tracker project in udemy course
+2. then starteed styling components
