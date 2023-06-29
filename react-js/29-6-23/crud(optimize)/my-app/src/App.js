@@ -1,4 +1,4 @@
-import logo from "./logo.svg";
+
 import "./App.css";
 import Modal from "./components/ModalForm";
 import UsersList from "./components/UsersList";
@@ -23,7 +23,6 @@ function App() {
         return user.id === formInput.id;
       });
 
-      // upd_obj = Array_obj.findIndex((obj => obj.id == 0));
       user[matchedUserindex] = formInput;
       setUser([...user]);
     } else {

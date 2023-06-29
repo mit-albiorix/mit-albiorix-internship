@@ -4,7 +4,6 @@ import { Modal, Button } from "react-bootstrap";
 
 function ModalForm(props) {
   const [formInput, setFormInput] = useState({
-    // id : 0,
     username: "",
     email: "",
     password: "",
@@ -13,7 +12,6 @@ function ModalForm(props) {
   useEffect(() => {
     if (props.index) {
       setFormInput({
-        // id : props.updateUser.id,
         username: props.updateUser.username,
         email: props.updateUser.email,
         password: props.updateUser.password,
@@ -22,10 +20,27 @@ function ModalForm(props) {
     }
   }, [props.index]);
 
+  const inputHandler = (e) => {
+    setFormInput((prevState) => {
+      return {
+        ...prevState,
+        [e.target.name]: e.target.value,
+      };
+    });
+  };
+
   const formHandler = (event) => {
     event.preventDefault();
-    console.log("form submittted ");
+
     props.userData(formInput);
+    setFormInput({
+      username: "",
+      email: "",
+      password: "",
+    });
+  };
+
+  const resetForm = () => {
     setFormInput({
       username: "",
       email: "",
@@ -56,16 +71,12 @@ function ModalForm(props) {
         keyboard={false}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Modal title</Modal.Title>
+          <Modal.Title>{!props.index ? "Add User" : "Update User"}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="container">
             <form onSubmit={formHandler}>
-              <h3 className="text-center">
-                {!props.index ? "Add User" : "Update User"}
-              </h3>
               <div className="form-group">
-                {/* <input type="number" value={formInput.id+=1}  disabled/> */}
                 <label htmlFor="username">Username</label>
                 <input
                   type="text"
@@ -73,13 +84,9 @@ function ModalForm(props) {
                   id="username"
                   aria-describedby="username"
                   placeholder="Enter username"
+                  name="username"
                   value={formInput.username}
-                  // onChange={usernameHandler}
-                  onChange={(e) => {
-                    setFormInput((prevState) => {
-                      return { ...prevState, username: e.target.value };
-                    });
-                  }}
+                  onChange={inputHandler}
                   required
                 />
               </div>
@@ -91,13 +98,9 @@ function ModalForm(props) {
                   id="email"
                   aria-describedby="emailHelp"
                   placeholder="Enter email"
+                  name="email"
                   value={formInput.email}
-                  // onChange={emailHandler}
-                  onChange={(e) => {
-                    setFormInput((prevState) => {
-                      return { ...prevState, email: e.target.value };
-                    });
-                  }}
+                  onChange={inputHandler}
                   required
                 />
                 <small id="emailHelp" className="form-text text-muted">
@@ -112,22 +115,19 @@ function ModalForm(props) {
                   className="form-control"
                   id="password"
                   placeholder="Password"
+                  name="password"
                   value={formInput.password}
-                  // onChange={passwordHandler}
-                  onChange={(e) => {
-                    setFormInput((prevState) => {
-                      return { ...prevState, password: e.target.value };
-                    });
-                  }}
+                  onChange={inputHandler}
                   required
                 />
               </div>
-
               <div>
                 <button
                   type="button"
                   className="btn btn-secondary float-right mr-2"
-                  onClick={props.handleClose}
+                  onClick={() => {
+                    props.handleClose(), resetForm();
+                  }}
                 >
                   Close
                 </button>

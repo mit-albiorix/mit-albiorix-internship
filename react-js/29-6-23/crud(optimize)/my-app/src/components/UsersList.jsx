@@ -1,12 +1,7 @@
 import React, { useState } from "react";
 
 function UsersList(props) {
-  console.log(props.users);
-
-  // const [userToBeUpdate, setuserToBeUpdate] = useState();
-
   const deleteUser = (index) => {
-    console.log(index);
     props.users.splice(index, 1);
     props.usersAfterDelete(props.users);
   };
@@ -16,12 +11,13 @@ function UsersList(props) {
       <div className="container mt-5">
         <table className="table">
           <thead>
-            <th scope="col">#</th>
-            <th scope="col">Username</th>
-            <th scope="col">Email</th>
-            <th scope="col">Password</th>
-            <th scope="col">Action</th>
-            {/* <!-- <th scope="col">Edit</th> --> */}
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Username</th>
+              <th scope="col">Email</th>
+              <th scope="col">Password</th>
+              <th scope="col">Action</th>
+            </tr>
           </thead>
           <tbody>
             {props.users.map((user, index) => {
