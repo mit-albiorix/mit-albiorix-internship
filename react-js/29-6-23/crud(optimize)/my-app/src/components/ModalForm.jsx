@@ -122,10 +122,7 @@ function ModalForm(props) {
                   required
                 />
               </div>
-              <div>
-                  <input type="checkbox" onclick="showPassword()" />
-                  <strong>Show Password</strong>
-                </div>
+
               <div>
                 <button
                   type="button"
@@ -146,7 +143,6 @@ function ModalForm(props) {
             </form>
           </div>
         </Modal.Body>
-      
       </Modal>
     </>
   );

@@ -47,9 +47,6 @@ function App() {
     setUpdateIndex(index + 1);
   };
 
-  // const handleShowForEdit = () =>{
-
-  // }
   return (
     <>
       <Modal
