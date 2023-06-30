@@ -66,12 +66,17 @@ function ModalForm(props) {
 
       <Modal
         show={props.modelState}
-        onHide={props.handleClose}
+        onHide={()=>{
+          props.handleClose(),
+          resetForm()
+        }}
         backdrop="static"
         keyboard={false}
       >
         <Modal.Header closeButton>
           <Modal.Title>{!props.index ? "Add User" : "Update User"}</Modal.Title>
+          {/* <Modal.Title>{!props.index && "add user"}</Modal.Title> */}
+          
         </Modal.Header>
         <Modal.Body>
           <div className="container">
