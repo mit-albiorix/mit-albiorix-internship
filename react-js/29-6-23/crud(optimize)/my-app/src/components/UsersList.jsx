@@ -1,9 +1,16 @@
 import React, { useState } from "react";
 
-function UsersList(props) {
+function UsersList({
+  users,
+  setUserState,
+  setUpdateUser,
+  setUpdateIndex,
+  handleShow,
+}) {
+  // delete user
   const deleteUser = (index) => {
-    props.users.splice(index, 1);
-    props.usersAfterDelete(props.users);
+    users.splice(index, 1);
+    setUserState([...users]);
   };
 
   return (
@@ -20,7 +27,7 @@ function UsersList(props) {
             </tr>
           </thead>
           <tbody>
-            {props.users.map((user, index) => {
+            {users.map((user, index) => {
               return (
                 <tr key={index}>
                   <td>{index + 1}</td>
@@ -42,8 +49,9 @@ function UsersList(props) {
                       type="button"
                       className="btn btn-primary"
                       onClick={() => {
-                        props.handleShow();
-                        props.updateUserHandler(user, index);
+                        handleShow();
+                        setUpdateUser(user);
+                        setUpdateIndex(index + 1);
                       }}
                     >
                       Edit

@@ -1,12 +1,10 @@
-
 import "./App.css";
 import Modal from "./components/ModalForm";
 import UsersList from "./components/UsersList";
 import { useState } from "react";
 
 function App() {
-  const userArr = [];
-  const [user, setUser] = useState(userArr);
+  const [user, setUser] = useState([]);
   const [updateUser, setUpdateUser] = useState();
   const [updateIndex, setUpdateIndex] = useState();
   const [show, setShow] = useState(false);
@@ -17,39 +15,11 @@ function App() {
   };
   const handleShow = () => setShow(true);
 
-  const userData = (formInput) => {
-    if (formInput.id) {
-      let matchedUserindex = user.findIndex((user) => {
-        return user.id === formInput.id;
-      });
-
-      user[matchedUserindex] = formInput;
-      setUser([...user]);
-    } else {
-      setUser((prevState) => {
-        return [
-          ...prevState,
-          { ...formInput, id: Math.ceil(Math.random() * 100) },
-        ];
-      });
-    }
-  };
-
-  const usersAfterDelete = (remUsers) => {
-    setUser((prevState) => {
-      return [...remUsers];
-    });
-  };
-
-  const updateUserHandler = (userToBeUpdate, index) => {
-    setUpdateUser(userToBeUpdate);
-    setUpdateIndex(index + 1);
-  };
-
   return (
     <>
       <Modal
-        userData={userData}
+        user={user}
+        setUserState={setUser}
         updateUser={updateUser}
         index={updateIndex}
         setIndex={setUpdateIndex}
@@ -63,10 +33,10 @@ function App() {
       {user.length >= 1 && (
         <UsersList
           users={user}
-          usersAfterDelete={usersAfterDelete}
-          updateUserHandler={updateUserHandler}
-          handleClose={handleClose}
+          setUserState={setUser}
           handleShow={handleShow}
+          setUpdateUser={setUpdateUser}
+          setUpdateIndex={setUpdateIndex}
         />
       )}
     </>

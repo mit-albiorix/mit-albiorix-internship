@@ -2,24 +2,37 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 
-function ModalForm(props) {
+function ModalForm({
+  user,
+  handleClose,
+  handleShow,
+  setIndex,
+  setUserState,
+  updateUser,
+  index,
+  modelState,
+}) {
+
+  // input state
   const [formInput, setFormInput] = useState({
     username: "",
     email: "",
     password: "",
   });
 
+  // useeffect to get the value back for edit
   useEffect(() => {
-    if (props.index) {
+    if (index) {
       setFormInput({
-        username: props.updateUser.username,
-        email: props.updateUser.email,
-        password: props.updateUser.password,
-        id: props.updateUser.id,
+        username: updateUser.username,
+        email: updateUser.email,
+        password: updateUser.password,
+        id: updateUser.id,
       });
     }
-  }, [props.index]);
+  }, [index]);
 
+  // handler for input fields
   const inputHandler = (e) => {
     setFormInput((prevState) => {
       return {
@@ -29,10 +42,25 @@ function ModalForm(props) {
     });
   };
 
+  //for add users and update users
   const formHandler = (event) => {
     event.preventDefault();
+    if (formInput.id) {
+      let matchedUserindex = user.findIndex((user) => {
+        return user.id === formInput.id;
+      });
 
-    props.userData(formInput);
+      user[matchedUserindex] = formInput;
+      setUserState([...user]);
+    } else {
+      setUserState((prevState) => {
+        return [
+          ...prevState,
+          { ...formInput, id: Math.ceil(Math.random() * 100) },
+        ];
+      });
+    }
+
     setFormInput({
       username: "",
       email: "",
@@ -40,6 +68,7 @@ function ModalForm(props) {
     });
   };
 
+  // resetform 
   const resetForm = () => {
     setFormInput({
       username: "",
@@ -56,8 +85,8 @@ function ModalForm(props) {
           className="btn btn-primary"
           variant="primary"
           onClick={() => {
-            props.setIndex(0);
-            props.handleShow();
+            setIndex(0);
+            handleShow();
           }}
         >
           Add User
@@ -65,18 +94,15 @@ function ModalForm(props) {
       </div>
 
       <Modal
-        show={props.modelState}
-        onHide={()=>{
-          props.handleClose(),
-          resetForm()
+        show={modelState}
+        onHide={() => {
+          handleClose(), resetForm();
         }}
         backdrop="static"
         keyboard={false}
       >
         <Modal.Header closeButton>
-          <Modal.Title>{!props.index ? "Add User" : "Update User"}</Modal.Title>
-          {/* <Modal.Title>{!props.index && "add user"}</Modal.Title> */}
-          
+          <Modal.Title>{!index ? "Add User" : "Update User"}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="container">
@@ -131,7 +157,7 @@ function ModalForm(props) {
                   type="button"
                   className="btn btn-secondary float-right mr-2"
                   onClick={() => {
-                    props.handleClose(), resetForm();
+                    handleClose(), resetForm();
                   }}
                 >
                   Close
@@ -140,9 +166,9 @@ function ModalForm(props) {
                   type="submit"
                   className="btn btn-success float-right mr-2"
                   id="submitbtn"
-                  onClick={props.handleClose}
+                  onClick={handleClose}
                 >
-                  {!props.index ? "Submit" : "Update"}
+                  {!index ? "Submit" : "Update"}
                 </button>
               </div>
             </form>
