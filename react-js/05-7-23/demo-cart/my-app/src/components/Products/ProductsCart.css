@@ -1,0 +1,14 @@
+.css-1999db7-MuiCardMedia-root{
+    height: 300px !important;
+}
+
+.css-1ri6ub7-MuiPaper-root-MuiCard-root {
+    margin-bottom: 35px;
+}
+
+.products{
+    
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
