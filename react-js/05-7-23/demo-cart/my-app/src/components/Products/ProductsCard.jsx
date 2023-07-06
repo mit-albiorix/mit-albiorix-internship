@@ -8,9 +8,10 @@ import Typography from "@mui/material/Typography";
 import "./ProductsCart.css";
 import isAdminContext from "../../context/isAdmin";
 import Cart from "../Cart/Cart";
+import Message from "../MessageDisplay/Message";
 
 function ProductsCard(props) {
-  const [ctx, setProductCount, setProductForCart] = useContext(isAdminContext);
+  const [ctx, setProductCount, setProductsForCart] = useContext(isAdminContext);
   const [productData, setProductData] = useState({
     image: "",
     title: "",
@@ -117,7 +118,7 @@ function ProductsCard(props) {
     let temp = ctx.productsForCart;
     temp.push(productForCart);
 
-    setProductForCart([...temp]);
+    setProductsForCart([...temp]);
 
     //     setProductForCart((prevState)=>{
     // return(
@@ -132,7 +133,8 @@ function ProductsCard(props) {
     console.log("count", ctx.productCount);
     localStorage.setItem("prodoctsInCarts", ctx.productCount);
     console.log(ctx.productCount);
-
+    // alert("added to cart")
+    
     // setProductData(productForCart);
     // console.log("set cart data",productData);
     // ctx.productsForCart.push(productData);

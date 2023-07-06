@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import isAdminContext from "./../../context/isAdmin";
 import Cart from "../Cart/Cart";
 import App from "../../App";
+import CartProduct from "../Cart/CartProduct";
 
 function Parent() {
   const [isAdmin, setAdmin] = useState(false);
@@ -29,6 +30,8 @@ function Parent() {
           <Routes>
             <Route path="/" element={<App />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/cart/product" element={<CartProduct/>} />
+
           </Routes>
         </BrowserRouter>
       </isAdminContext.Provider>

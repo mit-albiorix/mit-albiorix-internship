@@ -1,4 +1,4 @@
-import React, {useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 
 import "./HomeBlock.css";
 // import * as React from 'react';
@@ -36,9 +36,8 @@ const drawerWidth = 240;
 function HomeBlock(props) {
   const [admin, setAdmin] = React.useState(""); //  it is for to change the value for the select menu for admin and logoutz
 
-  const [ctx,setProductCount] = useContext(isAdminContext);
-  const navigate =useNavigate();
-  
+  const [ctx, setProductCount] = useContext(isAdminContext);
+  const navigate = useNavigate();
 
   const logoutHandler = () => {
     props.setLogIn(false);
@@ -58,9 +57,9 @@ function HomeBlock(props) {
     console.log("products");
   };
 
-const cartHandler=()=>{
-navigate('/cart')
-}
+  const cartHandler = () => {
+    navigate("/cart");
+  };
   return (
     <>
       <Box sx={{ display: "flex" }}>
@@ -76,7 +75,7 @@ navigate('/cart')
             <FormControl
               style={{ display: "flex", flexDirection: "row-reverse" }}
             >
-              <InputLabel id="demo-simple-select-label">Admin</InputLabel>
+              <InputLabel id="demo-simple-select-label">{(ctx.isAdmin ? "Admin" : "Users")}</InputLabel>
               <Select
                 style={{ width: "150px" }}
                 labelId="demo-simple-select-label"
@@ -91,11 +90,13 @@ navigate('/cart')
               </Select>
             </FormControl>
 
-            <div>
-              {/* <NavLink to="/cart"></NavLink> */}
-              <ShoppingCartIcon onClick={cartHandler}/>
-              <span className="count">{ctx.productCount}</span>
-            </div>
+            {ctx.isAdmin === false && (
+              <div>
+                {/* <NavLink to="/cart"></NavLink> */}
+                <ShoppingCartIcon onClick={cartHandler} />
+                <span className="count">{ctx.productCount}</span>
+              </div>
+            )}
           </Toolbar>
         </AppBar>
         <Drawer
@@ -114,24 +115,29 @@ navigate('/cart')
           <Divider />
 
           <List>
-          {ctx.isAdmin === true &&  <ListItem key={"Users"} disablePadding>
-              <ListItemButton>
-                <ListItemText primary="Users" onClick={usersHandler} />
-              </ListItemButton>
-            </ListItem>}
-           
-            {ctx.isAdmin === false && <ListItem key={"Products"} disablePadding>
-              <ListItemButton>
-                <ListItemText primary="Products" onClick={productsHandler} />
-              </ListItemButton>
-            </ListItem>}
-            
+            {ctx.isAdmin === true && (
+              <ListItem key={"Users"} disablePadding>
+                <ListItemButton>
+                  <ListItemText primary="Users" onClick={usersHandler} />
+                </ListItemButton>
+              </ListItem>
+            )}
+
+            {ctx.isAdmin === false && (
+              <ListItem key={"Products"} disablePadding>
+                <ListItemButton>
+                  <ListItemText primary="Products" onClick={productsHandler} />
+                </ListItemButton>
+              </ListItem>
+            )}
           </List>
         </Drawer>
         <Box component="main" sx={{ flexGrow: 1, bgcolor: "#faf2f2cf", p: 3 }}>
           <Toolbar />
           {ctx.isAdmin === true && <Users />}
-          {ctx.isAdmin === false && <Products setProductCount={props.setProductCount}/>}
+          {ctx.isAdmin === false && (
+            <Products setProductCount={props.setProductCount} />
+          )}
         </Box>
       </Box>
     </>
