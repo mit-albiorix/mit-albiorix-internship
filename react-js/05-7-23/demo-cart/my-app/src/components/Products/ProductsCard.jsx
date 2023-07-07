@@ -16,6 +16,7 @@ function ProductsCard(props) {
     image: "",
     title: "",
     description: "",
+  
   });
 
   // console.log("for cart");
@@ -114,8 +115,11 @@ function ProductsCard(props) {
   ];
 
   const handleAddToCart = (productForCart) => {
+
+    
     // console.log("addtocart", productForCart);
     let temp = ctx.productsForCart;
+
     temp.push(productForCart);
 
     setProductsForCart([...temp]);
@@ -134,7 +138,7 @@ function ProductsCard(props) {
     localStorage.setItem("prodoctsInCarts", ctx.productCount);
     console.log(ctx.productCount);
     // alert("added to cart")
-    
+
     // setProductData(productForCart);
     // console.log("set cart data",productData);
     // ctx.productsForCart.push(productData);

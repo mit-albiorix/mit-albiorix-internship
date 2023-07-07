@@ -75,7 +75,9 @@ function HomeBlock(props) {
             <FormControl
               style={{ display: "flex", flexDirection: "row-reverse" }}
             >
-              <InputLabel id="demo-simple-select-label">{(ctx.isAdmin ? "Admin" : "Users")}</InputLabel>
+              <InputLabel id="demo-simple-select-label">
+                {ctx.isAdmin ? "Admin" : "Users"}
+              </InputLabel>
               <Select
                 style={{ width: "150px" }}
                 labelId="demo-simple-select-label"

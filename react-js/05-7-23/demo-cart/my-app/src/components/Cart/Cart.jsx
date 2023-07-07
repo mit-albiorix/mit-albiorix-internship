@@ -11,21 +11,33 @@ import Typography from "@mui/material/Typography";
 import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import SkipNextIcon from "@mui/icons-material/SkipNext";
+
+// for qty select
+// import Box from '@mui/material/Box';
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+
 // import d from './../../static/images/'
 
 import "./Cart.css";
 import { Button, Container } from "react-bootstrap";
 import isAdminContext from "../../context/isAdmin";
-import { createSearchParams,useNavigate } from "react-router-dom";
-
-
+import { createSearchParams, useNavigate } from "react-router-dom";
 
 function Cart() {
   const [ctx, setProductCount, setProductsForCart, setAdmin] =
     useContext(isAdminContext);
 
-    const navigate =useNavigate()
- 
+  const [Qty, setQty] = React.useState("");
+
+  const handleChange = (event) => {
+    setQty(event.target.value);
+  };
+
+  const navigate = useNavigate();
+
   const theme = useTheme();
 
   const productsstr = localStorage.getItem("productsOfCart");
@@ -67,16 +79,14 @@ function Cart() {
   console.log(count);
   console.log(products);
 
-  const productHandler=(index)=>{
+  const productHandler = (product) => {
     console.log("hey this is product");
-    // navigate('/cart/product/');
-    navigate({
-      pathname :"/cart/product/",
-      search:createSearchParams({
-        id:index
-      }).toString()
-    })
-  }
+    // console.log("title",title);
+
+    // let name ="mit";
+    navigate("/cart/product/", { state: { product: product } });
+    // navigate({});
+  };
   return (
     <>
       <h1 className="headingCart">Your Products In Cart!</h1>
@@ -92,11 +102,19 @@ function Cart() {
                     sx={{ width: 151 }}
                     image={product.image}
                     alt="headphone"
-                    onClick={()=>{productHandler(index)}}
+                    onClick={() => {
+                      productHandler(product);
+                    }}
                   />
                   <Box sx={{ display: "flex", flexDirection: "column" }}>
                     <CardContent sx={{ flex: "1 0 auto" }}>
-                      <Typography component="div" variant="h5" onClick={()=>{productHandler(index)}}>
+                      <Typography
+                        component="div"
+                        variant="h5"
+                        onClick={() => {
+                          productHandler(product);
+                        }}
+                      >
                         {product.title}
                       </Typography>
                       <Typography
@@ -108,13 +126,29 @@ function Cart() {
                       </Typography>
                     </CardContent>
 
-                    <div className="footer" style={{ marginLeft: "6px" }}>
-                      <Button
-                        variant="text"
-                        style={{ maxWidth: "100px", color: "blue" }}
-                      >
-                        Qty
-                      </Button>
+                    <Box sx={{ minWidth: 120 }}>
+                    <div className="footer" style={{ marginLeft: "6px" ,marginBottom:"10px"}}>
+                      <FormControl >
+                        <InputLabel id="demo-simple-select-label">
+                          Qty
+                        </InputLabel>
+                        <Select
+                          labelId="demo-simple-select-label"
+                          id="demo-simple-select"
+                          value={Qty}
+                          label="Qty"
+                          onChange={handleChange}
+                          style={{ maxWidth: "85px"    }}
+                        >
+                          <MenuItem value={0}>0</MenuItem>
+
+                          <MenuItem value={1}>1</MenuItem>
+                          <MenuItem value={2}>2</MenuItem>
+                          <MenuItem value={3}>3</MenuItem>
+                          <MenuItem value={4}>4</MenuItem>
+                          <MenuItem value={5}>5</MenuItem>
+                        </Select>
+                      </FormControl>
                       <Button
                         variant="text"
                         style={{ maxWidth: "100px", color: "blue" }}
@@ -124,7 +158,8 @@ function Cart() {
                       >
                         Delete
                       </Button>
-                    </div>
+                      </div>
+                    </Box>
                   </Box>
                 </Card>
                 <br />
