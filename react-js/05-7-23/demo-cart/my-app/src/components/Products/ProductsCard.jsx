@@ -16,7 +16,6 @@ function ProductsCard(props) {
     image: "",
     title: "",
     description: "",
-  
   });
 
   // console.log("for cart");
@@ -115,14 +114,39 @@ function ProductsCard(props) {
   ];
 
   const handleAddToCart = (productForCart) => {
-
-    
-    // console.log("addtocart", productForCart);
+    // console.log("addtocart", productForCart)
+    let countQty = 1;
     let temp = ctx.productsForCart;
 
-    temp.push(productForCart);
+    let matchedProduct = temp.filter((product) => {
+      return product.title === productForCart.title;
+    });
+    console.log("matched", matchedProduct);
 
-    setProductsForCart([...temp]);
+    let matchedIndex = temp.findIndex((product)=>{
+       return product.title === productForCart.title
+    });
+    console.log("matchedIndex", matchedIndex);
+
+    if (matchedProduct.length===0) {
+      productForCart.qty = countQty;
+
+      console.log("qty", productForCart.qty);
+      temp.push(productForCart);
+      setProductsForCart([...temp]);
+      setProductCount(++ctx.productCount);
+      console.log("count", ctx.productCount);
+      localStorage.setItem("prodoctsInCarts", ctx.productCount);
+      console.log(ctx.productCount);
+    } else {
+      console.log("hello");
+      temp[matchedIndex].qty =++countQty;
+      setProductsForCart([...temp]);
+      setProductCount(++ctx.productCount);
+      console.log("count", ctx.productCount);
+      localStorage.setItem("prodoctsInCarts", ctx.productCount);
+      console.log(ctx.productCount);
+    }
 
     //     setProductForCart((prevState)=>{
     // return(
@@ -133,10 +157,7 @@ function ProductsCard(props) {
     //   ]
     // )
     //     })
-    setProductCount(++ctx.productCount);
-    console.log("count", ctx.productCount);
-    localStorage.setItem("prodoctsInCarts", ctx.productCount);
-    console.log(ctx.productCount);
+
     // alert("added to cart")
 
     // setProductData(productForCart);

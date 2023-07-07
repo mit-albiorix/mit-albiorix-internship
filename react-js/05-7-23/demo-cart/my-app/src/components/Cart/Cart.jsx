@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 //for card
 import { useTheme } from "@mui/material/styles";
@@ -30,21 +30,93 @@ function Cart() {
   const [ctx, setProductCount, setProductsForCart, setAdmin] =
     useContext(isAdminContext);
 
-  const [Qty, setQty] = React.useState("");
+  // for to set qty after each time change the value in localstoarge
+  const [productsFromStorage, setproductsFromStorage] = useState([]);
 
-  const handleChange = (event) => {
-    setQty(event.target.value);
-  };
+  // const productsstr = localStorage.getItem("productsOfCart");
+  // const products = JSON.parse(productsstr);
+  // console.log("products from lcoastorage", products);
+  // setproductsFromStorage([...products])
+
+  useEffect(() => {
+    const productsstr = localStorage.getItem("productsOfCart");
+    const products = JSON.parse(productsstr);
+    setproductsFromStorage([...products]);
+  }, [localStorage.getItem("productsOfCart")]);
 
   const navigate = useNavigate();
 
   const theme = useTheme();
 
-  const productsstr = localStorage.getItem("productsOfCart");
-  const products = JSON.parse(productsstr);
-  console.log("products from lcoastorage", products);
-
   let count = localStorage.getItem("prodoctsInCarts");
+  // const [Qty, setQty] = React.useState("");
+
+  const handleChange = async (event, product) => {
+    // setQty(event.target.value);
+    // console.log(Qty);
+    // product.qty = event.target.value;
+
+    let matchedProduct = productsFromStorage.filter((prod) => {
+      return product.title === prod.title;
+    });
+    console.log("matched", matchedProduct);
+
+    let matchedIndex = productsFromStorage.findIndex((prod) => {
+      return product.title === prod.title;
+    });
+    console.log("matchedIndex", matchedIndex);
+
+    // let countToAdd = event.target.value - productsFromStorage[matchedIndex].qty;
+    // if(countToAdd<0){
+    //   countToAdd++;
+    // }
+    // let countToAdd2 =
+    //   productsFromStorage[matchedIndex].qty - event.target.value;
+
+    // productsFromStorage[matchedIndex].qty = event.target.value;
+    //  if(countToAdd2<0){
+    //   countToAdd2++;
+    // }
+
+    let countToAdd =
+      event.target.value -
+      (matchedIndex === -1 ? 0 : productsFromStorage[matchedIndex].qty);
+    if (countToAdd < 0) {
+      countToAdd++;
+    }
+    let countToAdd2 =
+      (matchedIndex === -1 ? 0 : productsFromStorage[matchedIndex].qty) -
+      event.target.value;
+
+    if (matchedIndex !== -1) {
+      productsFromStorage[matchedIndex].qty = event.target.value;
+    }
+
+    if (countToAdd2 < 0) {
+      countToAdd2++;
+    }
+
+    await setProductsForCart([...productsFromStorage]);
+    console.log("products after qty", productsFromStorage);
+    localStorage.setItem("productsOfCart", JSON.stringify(productsFromStorage));
+
+    if (countToAdd > 0) {
+      count = +count + countToAdd;
+    } else if (countToAdd < 0) {
+      count -= +countToAdd2;
+    } else if (
+      matchedIndex !== -1 &&
+      event.target.value === 0
+    ) {
+      if (matchedIndex !== -1) {
+        count = +count - event.target.value;
+      }
+    }
+
+    setProductCount(count);
+    localStorage.setItem("prodoctsInCarts", count);
+    console.log(count);
+  };
 
   const deleteProduct = async (index) => {
     //   let temp = ctx.productsForCart
@@ -61,23 +133,23 @@ function Cart() {
     //   console.log(ctx.productCount)
     //   console.log(ctx.productsForCart);;
 
-    let temp = products;
+    let temp = productsFromStorage;
     console.log("before", temp);
     temp.splice(index, 1);
 
     console.log("temp", temp);
 
     await setProductsForCart([...temp]);
-    console.log("await", products);
-    localStorage.setItem("productsOfCart", JSON.stringify(products));
+    console.log("await", productsFromStorage);
+    localStorage.setItem("productsOfCart", JSON.stringify(productsFromStorage));
     // let c=--count;
     setProductCount(--count);
     localStorage.setItem("prodoctsInCarts", count);
     console.log(count);
-    console.log(products);
+    console.log(productsFromStorage);
   };
   console.log(count);
-  console.log(products);
+  console.log(productsFromStorage);
 
   const productHandler = (product) => {
     console.log("hey this is product");
@@ -92,8 +164,8 @@ function Cart() {
       <h1 className="headingCart">Your Products In Cart!</h1>
       <hr />
       <Container>
-        {products.length > 0 &&
-          products.map((product, index) => {
+        {productsFromStorage.length > 0 &&
+          productsFromStorage.map((product, index) => {
             return (
               <React.Fragment key={index}>
                 <Card sx={{ display: "flex" }}>
@@ -127,37 +199,49 @@ function Cart() {
                     </CardContent>
 
                     <Box sx={{ minWidth: 120 }}>
-                    <div className="footer" style={{ marginLeft: "6px" ,marginBottom:"10px"}}>
-                      <FormControl >
-                        <InputLabel id="demo-simple-select-label">
-                          Qty
-                        </InputLabel>
-                        <Select
-                          labelId="demo-simple-select-label"
-                          id="demo-simple-select"
-                          value={Qty}
-                          label="Qty"
-                          onChange={handleChange}
-                          style={{ maxWidth: "85px"    }}
-                        >
-                          <MenuItem value={0}>0</MenuItem>
-
-                          <MenuItem value={1}>1</MenuItem>
-                          <MenuItem value={2}>2</MenuItem>
-                          <MenuItem value={3}>3</MenuItem>
-                          <MenuItem value={4}>4</MenuItem>
-                          <MenuItem value={5}>5</MenuItem>
-                        </Select>
-                      </FormControl>
-                      <Button
-                        variant="text"
-                        style={{ maxWidth: "100px", color: "blue" }}
-                        onClick={() => {
-                          return deleteProduct(index);
-                        }}
+                      <div
+                        className="footer"
+                        style={{ marginLeft: "6px", marginBottom: "10px" }}
                       >
-                        Delete
-                      </Button>
+                        <FormControl>
+                          <InputLabel id="demo-simple-select-label">
+                            Qty
+                          </InputLabel>
+                          <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={product.qty}
+                            label="Qty"
+                            onChange={(event) => {
+                              handleChange(event, product);
+                            }}
+                            style={{ maxWidth: "85px" }}
+                          >
+                            <MenuItem
+                              value={0}
+                              onClick={() => {
+                                return deleteProduct(index);
+                              }}
+                            >
+                              0
+                            </MenuItem>
+
+                            <MenuItem value={1}>1</MenuItem>
+                            <MenuItem value={2}>2</MenuItem>
+                            <MenuItem value={3}>3</MenuItem>
+                            <MenuItem value={4}>4</MenuItem>
+                            <MenuItem value={5}>5</MenuItem>
+                          </Select>
+                        </FormControl>
+                        <Button
+                          variant="text"
+                          style={{ maxWidth: "100px", color: "blue" }}
+                          onClick={() => {
+                            return deleteProduct(index);
+                          }}
+                        >
+                          Delete
+                        </Button>
                       </div>
                     </Box>
                   </Box>
@@ -167,7 +251,7 @@ function Cart() {
             );
           })}
 
-        {products.length === 0 && (
+        {productsFromStorage.length === 0 && (
           <h5 style={{ textAlign: "center" }}>
             No Products Added to Cart! Click below to see products
           </h5>
