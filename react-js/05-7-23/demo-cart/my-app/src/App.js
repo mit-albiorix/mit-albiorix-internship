@@ -28,12 +28,9 @@ function App() {
       productsForCartFromLocalStoragestr
     );
 
-   
-
-
     if (logininfoAdmin === "Admin" || logininfoUsers === "Users") {
       setLogIn(true);
-      console.log("login cooutn",productCountOfCart);
+      console.log("login cooutn", productCountOfCart);
     }
 
     if (productsForCartFromLocalStorage !== null) {

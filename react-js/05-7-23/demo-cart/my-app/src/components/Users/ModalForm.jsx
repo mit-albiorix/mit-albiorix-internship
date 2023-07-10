@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
-import './ModalForm.css'
+import "./ModalForm.css";
+import { json } from "react-router-dom";
 
 function ModalForm({
   user,
@@ -14,6 +15,7 @@ function ModalForm({
   modelState,
 }) {
   // input state
+  console.log("top", user);
   const [formInput, setFormInput] = useState({
     username: "",
     email: "",
@@ -54,12 +56,22 @@ function ModalForm({
       setUserState([...user]);
     } else {
       setUserState((prevState) => {
+        console.log("addinng id", [
+          ...prevState,
+          { ...formInput, id: Math.ceil(Math.random() * 100) },
+        ]);
         return [
           ...prevState,
           { ...formInput, id: Math.ceil(Math.random() * 100) },
         ];
       });
+      
+      console.log("setuser", user);
+
+      console.log("tformsubmit", user);
     }
+
+    console.log("tformsubmit", user);
 
     setFormInput({
       username: "",
@@ -94,7 +106,7 @@ function ModalForm({
       </div>
 
       <Modal
-      className="Modal"
+        className="Modal"
         show={modelState}
         onHide={() => {
           handleClose();
@@ -102,7 +114,7 @@ function ModalForm({
         }}
         backdrop="static"
         keyboard={false}
-        style={{zIndex : "100001 !important"}}
+        style={{ zIndex: "100001 !important" }}
       >
         <Modal.Header closeButton>
           <Modal.Title>{!index ? "Add User" : "Update User"}</Modal.Title>

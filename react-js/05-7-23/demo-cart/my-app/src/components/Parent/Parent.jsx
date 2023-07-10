@@ -11,6 +11,7 @@ function Parent() {
   const [isAdmin, setAdmin] = useState(false);
   const [productCount, setProductCount] = useState(0);
   const [productsForCart, setProductsForCart] = useState([]);
+  const [isLoggedIn, setLogIn] = useState(false);
 
   return (
     <>
@@ -18,12 +19,15 @@ function Parent() {
         value={[
           {
             isAdmin: isAdmin,
+            isLoggedIn :isLoggedIn,
             productCount: productCount,
             productsForCart: [...productsForCart],
+            
           },
           setProductCount,
           setProductsForCart,
           setAdmin,
+          setLogIn
         ]}
       >
         <BrowserRouter>

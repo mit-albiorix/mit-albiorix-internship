@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 
 import "./HomeBlock.css";
 // import * as React from 'react';
@@ -34,11 +34,21 @@ import { NavLink } from "react-bootstrap";
 const drawerWidth = 240;
 
 function HomeBlock(props) {
-  const [admin, setAdmin] = React.useState(""); //  it is for to change the value for the select menu for admin and logoutz
+  const [ctx, setProductCount, setProductsForCart,setAdmin,setLogIn] = useContext(isAdminContext);
+  const [profileText, setProfileText] = React.useState(""); //  it is for to change the value for the select menu for admin and logoutz
 
-  const [ctx, setProductCount] = useContext(isAdminContext);
+  // const [ctx, setProductCount] = useContext(isAdminContext);
   const navigate = useNavigate();
 
+  let adminFromStorage = "";
+  useEffect(() => {
+    adminFromStorage = localStorage.getItem("LoggedInAdmin");
+    console.log("admin",adminFromStorage);
+    adminFromStorage === "Admin" ? setAdmin(true) : setAdmin(false);
+    console.log("refresh",ctx.isAdmin);
+  }, []);
+
+  console.log("out",ctx.isAdmin);
   const logoutHandler = () => {
     props.setLogIn(false);
     localStorage.removeItem("LoggedInAdmin");
@@ -46,7 +56,7 @@ function HomeBlock(props) {
   };
 
   const handleChange = (event) => {
-    setAdmin(event.target.value.toString());
+    setProfileText(event.target.value.toString());
   };
 
   const usersHandler = () => {
@@ -82,7 +92,7 @@ function HomeBlock(props) {
                 style={{ width: "150px" }}
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={admin}
+                value={profileText}
                 label="Admin"
                 onChange={handleChange}
               >

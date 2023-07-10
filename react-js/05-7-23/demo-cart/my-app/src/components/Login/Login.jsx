@@ -19,8 +19,8 @@ function Login(props) {
       );
     } else {
       if (formInput.username == "Admin" && formInput.password == "admin123") {
-        props.setAdmin(true);
         localStorage.setItem("LoggedInAdmin", "Admin");
+        props.setAdmin(true);
         console.log("admin logged in");
       } else {
         localStorage.setItem("LoggedInUsers", "Users");
@@ -59,7 +59,7 @@ function Login(props) {
           }}
           required
         />
-      <br />
+        <br />
         <TextField
           id="outlined-basic"
           label="Password"
@@ -76,7 +76,7 @@ function Login(props) {
           }}
           required
         />
-       <br />
+        <br />
         <Button
           style={{ width: "120px" }}
           variant="contained"
@@ -84,7 +84,7 @@ function Login(props) {
         >
           Login
         </Button>
-       <br />
+        <br />
       </Container>
     </>
   );

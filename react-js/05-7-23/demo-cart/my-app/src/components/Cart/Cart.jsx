@@ -49,73 +49,49 @@ function Cart() {
   const theme = useTheme();
 
   let count = localStorage.getItem("prodoctsInCarts");
+
+  useEffect(() => {
+    const productsstr = localStorage.getItem("productsOfCart");
+    const products = JSON.parse(productsstr);
+    setproductsFromStorage([...products]);
+
+    let oldcount = localStorage.getItem("prodoctsInCarts");
+    setProductCount(oldcount);
+    console.log("before setting 0", productsFromStorage);
+  }, []);
+
   // const [Qty, setQty] = React.useState("");
 
-  const handleChange = async (event, product) => {
-    // setQty(event.target.value);
-    // console.log(Qty);
-    // product.qty = event.target.value;
-
-    let matchedProduct = productsFromStorage.filter((prod) => {
-      return product.title === prod.title;
-    });
-    console.log("matched", matchedProduct);
-
+  const handleChange = (event, product) => {
     let matchedIndex = productsFromStorage.findIndex((prod) => {
       return product.title === prod.title;
     });
+
+    console.log("product", product);
     console.log("matchedIndex", matchedIndex);
+    console.log("qty of index for 0", productsFromStorage[matchedIndex].qty);
 
-    // let countToAdd = event.target.value - productsFromStorage[matchedIndex].qty;
-    // if(countToAdd<0){
-    //   countToAdd++;
-    // }
-    // let countToAdd2 =
-    //   productsFromStorage[matchedIndex].qty - event.target.value;
-
-    // productsFromStorage[matchedIndex].qty = event.target.value;
-    //  if(countToAdd2<0){
-    //   countToAdd2++;
-    // }
-
-    let countToAdd =
-      event.target.value -
-      (matchedIndex === -1 ? 0 : productsFromStorage[matchedIndex].qty);
-    if (countToAdd < 0) {
-      countToAdd++;
-    }
-    let countToAdd2 =
-      (matchedIndex === -1 ? 0 : productsFromStorage[matchedIndex].qty) -
+    let newcount =
+      ctx.productCount -
+      productsFromStorage[matchedIndex].qty +
       event.target.value;
+    productsFromStorage[matchedIndex].qty = event.target.value;
 
     if (matchedIndex !== -1) {
-      productsFromStorage[matchedIndex].qty = event.target.value;
-    }
+      if (event.target.value === 0) {
+        productsFromStorage.splice(matchedIndex, 1);
 
-    if (countToAdd2 < 0) {
-      countToAdd2++;
-    }
-
-    await setProductsForCart([...productsFromStorage]);
-    console.log("products after qty", productsFromStorage);
-    localStorage.setItem("productsOfCart", JSON.stringify(productsFromStorage));
-
-    if (countToAdd > 0) {
-      count = +count + countToAdd;
-    } else if (countToAdd < 0) {
-      count -= +countToAdd2;
-    } else if (
-      matchedIndex !== -1 &&
-      event.target.value === 0
-    ) {
-      if (matchedIndex !== -1) {
-        count = +count - event.target.value;
+        console.log("after deleting 0", productsFromStorage);
       }
     }
 
-    setProductCount(count);
-    localStorage.setItem("prodoctsInCarts", count);
-    console.log(count);
+    setProductsForCart([...productsFromStorage]);
+    console.log("products after qty", productsFromStorage);
+    localStorage.setItem("productsOfCart", JSON.stringify(productsFromStorage));
+
+    setProductCount(newcount);
+    localStorage.setItem("prodoctsInCarts", newcount);
+    console.log(newcount);
   };
 
   const deleteProduct = async (index) => {
@@ -134,6 +110,7 @@ function Cart() {
     //   console.log(ctx.productsForCart);;
 
     let temp = productsFromStorage;
+    count = count - temp[index].qty;
     console.log("before", temp);
     temp.splice(index, 1);
 
@@ -141,9 +118,15 @@ function Cart() {
 
     await setProductsForCart([...temp]);
     console.log("await", productsFromStorage);
+    console.log("countof delete", count);
     localStorage.setItem("productsOfCart", JSON.stringify(productsFromStorage));
     // let c=--count;
-    setProductCount(--count);
+
+    console.log("deleteqty", productsFromStorage[index]);
+    // if(index !== -1){
+
+    // }
+    setProductCount(count);
     localStorage.setItem("prodoctsInCarts", count);
     console.log(count);
     console.log(productsFromStorage);
@@ -219,9 +202,9 @@ function Cart() {
                           >
                             <MenuItem
                               value={0}
-                              onClick={() => {
-                                return deleteProduct(index);
-                              }}
+                              // onClick={() => {
+                              //   return deleteProduct(index);
+                              // }}
                             >
                               0
                             </MenuItem>

@@ -4,7 +4,7 @@ import Users from "../Users/Users";
 import Products from "../Products/Products";
 
 function Home(props) {
-
+  // const [ctx, setProductCount, setProductsForCart] = useContext(isAdminContext);
   
   return (
     <>
