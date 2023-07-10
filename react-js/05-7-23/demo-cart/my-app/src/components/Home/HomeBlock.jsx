@@ -31,10 +31,15 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import ReactDOM from "react-dom/client";
 import { useNavigate } from "react-router-dom";
 import { NavLink } from "react-bootstrap";
+// import isAdminContext from "../../context/isAdmin";
+
 const drawerWidth = 240;
 
-function HomeBlock(props) {
-  const [ctx, setProductCount, setProductsForCart,setAdmin,setLogIn] = useContext(isAdminContext);
+function HomeBlock() {
+  const [ctx, setProductCount, setProductsForCart, setAdmin, setLogIn] =
+    useContext(isAdminContext);
+  let { isAdmin, isLoggedIn, productCount, productsForCart } = ctx;
+
   const [profileText, setProfileText] = React.useState(""); //  it is for to change the value for the select menu for admin and logoutz
 
   // const [ctx, setProductCount] = useContext(isAdminContext);
@@ -50,7 +55,7 @@ function HomeBlock(props) {
 
   console.log("out",ctx.isAdmin);
   const logoutHandler = () => {
-    props.setLogIn(false);
+    setLogIn(false);
     localStorage.removeItem("LoggedInAdmin");
     localStorage.removeItem("LoggedInUsers");
   };
@@ -148,7 +153,7 @@ function HomeBlock(props) {
           <Toolbar />
           {ctx.isAdmin === true && <Users />}
           {ctx.isAdmin === false && (
-            <Products setProductCount={props.setProductCount} />
+            <Products setProductCount={setProductCount} />
           )}
         </Box>
       </Box>

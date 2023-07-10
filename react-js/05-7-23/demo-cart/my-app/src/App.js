@@ -5,9 +5,10 @@ import Home from "./components/Home/Home";
 import isAdminContext from "./context/isAdmin";
 
 function App() {
-  const [ctx, setProductCount, setProductsForCart, setAdmin] =
+  const [ctx, setProductCount, setProductsForCart, setAdmin, setLogIn] =
     useContext(isAdminContext);
-  const [isLoggedIn, setLogIn] = useState(false);
+  const { isAdmin, isLoggedIn, productCount, productsForCart } = ctx;
+  // const [isLoggedIn, setLogIn] = useState(false);
 
   // const [isLoggedInUser,setIsLoggedInUser] =useState(false)
   // const [isLoggedInAdmin,setIsLoggedAdmin] =useState(false)
@@ -52,7 +53,7 @@ function App() {
 
   return (
     <>
-      {!isLoggedIn && <Login setLogIn={setLogIn} setAdmin={setAdmin} />}
+      {!isLoggedIn && <Login />}
       {isLoggedIn && <Home setLogIn={setLogIn} />}
     </>
   );

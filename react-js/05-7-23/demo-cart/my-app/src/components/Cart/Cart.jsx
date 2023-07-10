@@ -30,6 +30,8 @@ function Cart() {
   const [ctx, setProductCount, setProductsForCart, setAdmin] =
     useContext(isAdminContext);
 
+  let { isAdmin, isLoggedIn, productCount, productsForCart } = ctx;
+
   // for to set qty after each time change the value in localstoarge
   const [productsFromStorage, setproductsFromStorage] = useState([]);
 
@@ -72,7 +74,7 @@ function Cart() {
     console.log("qty of index for 0", productsFromStorage[matchedIndex].qty);
 
     let newcount =
-      ctx.productCount -
+      productCount -
       productsFromStorage[matchedIndex].qty +
       event.target.value;
     productsFromStorage[matchedIndex].qty = event.target.value;
@@ -95,19 +97,19 @@ function Cart() {
   };
 
   const deleteProduct = async (index) => {
-    //   let temp = ctx.productsForCart
+    //   let temp = productsForCart
     //   console.log("before", temp);
     //   temp.splice(index,1);
 
     //   console.log("temp", temp);
 
     // await  setProductsForCart([...temp]);
-    //   console.log("await", ctx.productsForCart);
-    //   localStorage.setItem("productsOfCart", JSON.stringify(ctx.productsForCart));
-    //   setProductCount(--ctx.productCount);
-    //   localStorage.setItem("prodoctsInCarts", ctx.productCount);
-    //   console.log(ctx.productCount)
-    //   console.log(ctx.productsForCart);;
+    //   console.log("await", productsForCart);
+    //   localStorage.setItem("productsOfCart", JSON.stringify(productsForCart));
+    //   setProductCount(--productCount);
+    //   localStorage.setItem("prodoctsInCarts", productCount);
+    //   console.log(productCount)
+    //   console.log(productsForCart);;
 
     let temp = productsFromStorage;
     count = count - temp[index].qty;

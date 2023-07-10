@@ -1,7 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { TextField, Container, Button } from "@mui/material";
+import isAdminContext from "../../context/isAdmin";
 
 function Login(props) {
+  const [ctx, setProductCount, setProductsForCart, setAdmin, setLogIn] =
+    useContext(isAdminContext);
+  let { isAdmin, isLoggedIn, productCount, productsForCart } = ctx;
+
   const [formInput, setFormInput] = useState({
     username: "",
     password: "",
@@ -20,15 +25,15 @@ function Login(props) {
     } else {
       if (formInput.username == "Admin" && formInput.password == "admin123") {
         localStorage.setItem("LoggedInAdmin", "Admin");
-        props.setAdmin(true);
+        setAdmin(true);
         console.log("admin logged in");
       } else {
         localStorage.setItem("LoggedInUsers", "Users");
-        props.setAdmin(false);
+        setAdmin(false);
         console.log("users loggedin");
       }
 
-      props.setLogIn(true);
+      setLogIn(true);
     }
   };
 

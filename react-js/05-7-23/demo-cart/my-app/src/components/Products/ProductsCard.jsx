@@ -10,8 +10,11 @@ import isAdminContext from "../../context/isAdmin";
 import Cart from "../Cart/Cart";
 import Message from "../MessageDisplay/Message";
 
-function ProductsCard(props) {
-  const [ctx, setProductCount, setProductsForCart] = useContext(isAdminContext);
+function ProductsCard() {
+  const [ctx, setProductCount, setProductsForCart, setAdmin, setLogIn] =
+    useContext(isAdminContext);
+  let { isAdmin, isLoggedIn, productCount, productsForCart } = ctx;
+
   const [productData, setProductData] = useState({
     image: "",
     title: "",
@@ -116,37 +119,33 @@ function ProductsCard(props) {
   const handleAddToCart = (productForCart) => {
     // console.log("addtocart", productForCart)
     let countQty = 1;
-    let temp = ctx.productsForCart;
+    let temp = productsForCart;
 
     let matchedProduct = temp.filter((product) => {
       return product.title === productForCart.title;
     });
     console.log("matched", matchedProduct);
 
-    let matchedIndex = temp.findIndex((product)=>{
-       return product.title === productForCart.title
+    let matchedIndex = temp.findIndex((product) => {
+      return product.title === productForCart.title;
     });
     console.log("matchedIndex", matchedIndex);
 
-    if (matchedProduct.length===0) {
+    if (matchedProduct.length === 0) {
       productForCart.qty = countQty;
 
       console.log("qty", productForCart.qty);
       temp.push(productForCart);
-      setProductsForCart([...temp]);
-      setProductCount(++ctx.productCount);
-      console.log("count", ctx.productCount);
-      localStorage.setItem("prodoctsInCarts", ctx.productCount);
-      console.log(ctx.productCount);
     } else {
       console.log("hello");
-      temp[matchedIndex].qty =++countQty;
-      setProductsForCart([...temp]);
-      setProductCount(++ctx.productCount);
-      console.log("count", ctx.productCount);
-      localStorage.setItem("prodoctsInCarts", ctx.productCount);
-      console.log(ctx.productCount);
+      temp[matchedIndex].qty = ++countQty;
     }
+
+    setProductsForCart([...temp]);
+    setProductCount(++productCount);
+    console.log("count", productCount);
+    localStorage.setItem("prodoctsInCarts", productCount);
+    console.log(productCount);
 
     //     setProductForCart((prevState)=>{
     // return(
@@ -162,10 +161,10 @@ function ProductsCard(props) {
 
     // setProductData(productForCart);
     // console.log("set cart data",productData);
-    // ctx.productsForCart.push(productData);
-    // console.log(ctx.productData);
+    //productsForCart.push(productData);
+    // console.log(productData);
   };
-  console.log("final add to cart", ctx.productsForCart);
+  console.log("final add to cart", productsForCart);
 
   return (
     <div className="products">
