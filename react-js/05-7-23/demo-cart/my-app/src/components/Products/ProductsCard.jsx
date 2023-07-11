@@ -1,14 +1,16 @@
 import React, { useContext, useState } from "react";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
+
+import {
+  Card,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Button,
+  Typography,
+} from "@mui/material";
+
 import "./ProductsCart.css";
 import isAdminContext from "../../context/isAdmin";
-import Cart from "../Cart/Cart";
-import Message from "../MessageDisplay/Message";
 
 function ProductsCard() {
   const [ctx, setProductCount, setProductsForCart, setAdmin, setLogIn] =
@@ -116,9 +118,10 @@ function ProductsCard() {
     },
   ];
 
+  let countQty = 1;
   const handleAddToCart = (productForCart) => {
     // console.log("addtocart", productForCart)
-    let countQty = 1;
+
     let temp = productsForCart;
 
     let matchedProduct = temp.filter((product) => {
@@ -138,7 +141,7 @@ function ProductsCard() {
       temp.push(productForCart);
     } else {
       console.log("hello");
-      temp[matchedIndex].qty = ++countQty;
+      temp[matchedIndex].qty = ++productsForCart[matchedIndex].qty;
     }
 
     setProductsForCart([...temp]);

@@ -2,29 +2,22 @@ import React, { useContext, useEffect, useState } from "react";
 
 //for card
 import { useTheme } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import SkipNextIcon from "@mui/icons-material/SkipNext";
-
-// for qty select
-// import Box from '@mui/material/Box';
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-
-// import d from './../../static/images/'
+import {
+  Box,
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+  InputLabel,
+  MenuItem,
+  FormControl,
+  Select
+} from "@mui/material";
 
 import "./Cart.css";
 import { Button, Container } from "react-bootstrap";
 import isAdminContext from "../../context/isAdmin";
-import { createSearchParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Cart() {
   const [ctx, setProductCount, setProductsForCart, setAdmin] =
@@ -34,11 +27,6 @@ function Cart() {
 
   // for to set qty after each time change the value in localstoarge
   const [productsFromStorage, setproductsFromStorage] = useState([]);
-
-  // const productsstr = localStorage.getItem("productsOfCart");
-  // const products = JSON.parse(productsstr);
-  // console.log("products from lcoastorage", products);
-  // setproductsFromStorage([...products])
 
   useEffect(() => {
     const productsstr = localStorage.getItem("productsOfCart");
@@ -74,9 +62,7 @@ function Cart() {
     console.log("qty of index for 0", productsFromStorage[matchedIndex].qty);
 
     let newcount =
-      productCount -
-      productsFromStorage[matchedIndex].qty +
-      event.target.value;
+      productCount - productsFromStorage[matchedIndex].qty + event.target.value;
     productsFromStorage[matchedIndex].qty = event.target.value;
 
     if (matchedIndex !== -1) {
@@ -97,20 +83,6 @@ function Cart() {
   };
 
   const deleteProduct = async (index) => {
-    //   let temp = productsForCart
-    //   console.log("before", temp);
-    //   temp.splice(index,1);
-
-    //   console.log("temp", temp);
-
-    // await  setProductsForCart([...temp]);
-    //   console.log("await", productsForCart);
-    //   localStorage.setItem("productsOfCart", JSON.stringify(productsForCart));
-    //   setProductCount(--productCount);
-    //   localStorage.setItem("prodoctsInCarts", productCount);
-    //   console.log(productCount)
-    //   console.log(productsForCart);;
-
     let temp = productsFromStorage;
     count = count - temp[index].qty;
     console.log("before", temp);
@@ -122,12 +94,9 @@ function Cart() {
     console.log("await", productsFromStorage);
     console.log("countof delete", count);
     localStorage.setItem("productsOfCart", JSON.stringify(productsFromStorage));
-    // let c=--count;
 
     console.log("deleteqty", productsFromStorage[index]);
-    // if(index !== -1){
 
-    // }
     setProductCount(count);
     localStorage.setItem("prodoctsInCarts", count);
     console.log(count);
@@ -138,11 +107,8 @@ function Cart() {
 
   const productHandler = (product) => {
     console.log("hey this is product");
-    // console.log("title",title);
 
-    // let name ="mit";
     navigate("/cart/product/", { state: { product: product } });
-    // navigate({});
   };
   return (
     <>

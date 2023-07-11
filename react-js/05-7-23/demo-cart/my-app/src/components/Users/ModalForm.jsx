@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import "./ModalForm.css";
-import { json } from "react-router-dom";
+
 
 function ModalForm({
   user,
@@ -56,16 +56,16 @@ function ModalForm({
       setUserState([...user]);
     } else {
       setUserState((prevState) => {
-        console.log("addinng id", [
-          ...prevState,
-          { ...formInput, id: Math.ceil(Math.random() * 100) },
-        ]);
+        // console.log("addinng id", [
+        //   ...prevState,
+        //   { ...formInput, id: Math.ceil(Math.random() * 100) },
+        // ]);
         return [
           ...prevState,
           { ...formInput, id: Math.ceil(Math.random() * 100) },
         ];
       });
-      
+
       console.log("setuser", user);
 
       console.log("tformsubmit", user);

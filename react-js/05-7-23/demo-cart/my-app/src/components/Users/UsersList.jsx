@@ -18,8 +18,8 @@ function UsersList({
   const deleteUser = (index) => {
     users.splice(index, 1);
     setUserState([...users]);
-    console.log("delete",users);
-    localStorage.setItem('Users',users)
+    console.log("delete", users);
+    localStorage.setItem("Users", users);
   };
 
   return (

@@ -1,21 +1,14 @@
 import React from "react";
-import { useLocation, useSearchParams } from "react-router-dom";
-import { useTheme } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
+import { useLocation } from "react-router-dom";
+
+import { Box, Card, CardContent, CardMedia, Typography } from "@mui/material";
 
 import "./Cart.css";
 import { Button, Container } from "react-bootstrap";
-import isAdminContext from "../../context/isAdmin";
-import img from './../../static/images/headphone.png'
 
 function CartProduct() {
   const location = useLocation();
-  console.log(img===location.state.product.image);
+
   return (
     <>
       <h2 style={{ textAlign: "center", marginTop: "10px" }}>
@@ -23,11 +16,11 @@ function CartProduct() {
       </h2>
       <hr />
       {console.log("hbhjbhj", location.state.product.image)}
-       <Container>
+      <Container>
         <Card sx={{ display: "flex" }}>
           <CardMedia
             component="img"
-            sx={{ width: 300,height:500 }}
+            sx={{ width: 300, height: 500 }}
             image={location.state.product.image}
             // alt="headphone"
           />
@@ -57,7 +50,6 @@ function CartProduct() {
           </Box>
         </Card>
       </Container>
-    
     </>
   );
 }

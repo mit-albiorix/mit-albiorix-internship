@@ -8,46 +8,17 @@ function App() {
   const [ctx, setProductCount, setProductsForCart, setAdmin, setLogIn] =
     useContext(isAdminContext);
   const { isAdmin, isLoggedIn, productCount, productsForCart } = ctx;
-  // const [isLoggedIn, setLogIn] = useState(false);
 
-  // const [isLoggedInUser,setIsLoggedInUser] =useState(false)
-  // const [isLoggedInAdmin,setIsLoggedAdmin] =useState(false)
-
-  // const [isAdmin, setAdmin] = useState(false);
-  // const [productCount, setProductCount] = useState(0);
-  // const [productsForCart, setProductsForCart] = useState([]);
-
-  // set the localstorage for cart
 
   useEffect(() => {
     const logininfoAdmin = localStorage.getItem("LoggedInAdmin");
     const logininfoUsers = localStorage.getItem("LoggedInUsers");
-    const productCountOfCart = localStorage.getItem("prodoctsInCarts");
-    const productsForCartFromLocalStoragestr =
-      localStorage.getItem("productsOfCart");
-    const productsForCartFromLocalStorage = JSON.parse(
-      productsForCartFromLocalStoragestr
-    );
 
     if (logininfoAdmin === "Admin" || logininfoUsers === "Users") {
       setLogIn(true);
-      console.log("login cooutn", productCountOfCart);
-    }
-
-    if (productsForCartFromLocalStorage !== null) {
-      setProductsForCart(productsForCartFromLocalStorage);
-    }
-    if (productCountOfCart !== null) {
-      setProductCount(productCountOfCart);
+      // console.log("login cooutn", productCountOfCart);
     }
   }, []);
-
-  useEffect(() => {
-    // if (productsForCart.length > 0) {
-    console.log("into cart", ctx.productsForCart);
-    localStorage.setItem("productsOfCart", JSON.stringify(ctx.productsForCart));
-    // }
-  }, [ctx.productsForCart]);
 
   console.log("hello", ctx.productsForCart);
 
