@@ -3,13 +3,16 @@ import classes from "./Counter.module.css";
 import { useState } from "react";
 
 const Counter = () => {
-  const [showCounter, setShowCounter] = useState(true);
-  // const counter = useSelector((state) => state.counter);
+  // const [showCounter, setShowCounter] = useState(true);
+
+  const counter = useSelector((state) => state.counter);
+  const showCounter =useSelector((state)=>state.showCounter)
   const dispatch = useDispatch();
 
   const toggleCounterHandler = () => {
-    setShowCounter((prevState) =>{ return(!prevState)});
-    // dispatch({type : "toggle"})
+    console.log("hhjj");
+    // setShowCounter((prevState) =>{ return(!prevState)});
+    dispatch({type : "toggle"})
   };
 
   const incrementHandler = () => {
@@ -28,11 +31,11 @@ const Counter = () => {
 
       {showCounter && <div className={classes.value}>{counter}</div>}
       <div>
-        <button onClick={incrementHandler}>Increment</button>
-        <button onClick={increseHandler}>IncreseBy 5</button>
-        <button onClick={decrementHandler}>Decrement</button>
+        <button onClick={()=>incrementHandler()}>Increment</button>
+        <button onClick={()=>increseHandler()}>IncreseBy 5</button>
+        <button onClick={()=>{decrementHandler()}}>Decrement</button>
       </div>
-      {/* <button onClick={toggleCounterHandler}>Toggle Counter</button> */}
+      <button onClick={()=>{toggleCounterHandler()}}>Toggle Counter</button>
     </main>
   );
 };
