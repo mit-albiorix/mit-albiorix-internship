@@ -15,6 +15,7 @@ function Form() {
 
   useEffect(() => {
     if (edituser.id) {
+      console.log("edit",edituser.id);
       setFormData({
         name: edituser.name,
         password: edituser.password,

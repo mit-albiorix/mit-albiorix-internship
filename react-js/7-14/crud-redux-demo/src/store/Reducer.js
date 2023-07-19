@@ -1,7 +1,7 @@
 import { createStore } from "redux";
 
-const usersFromStoragestr = localStorage.getItem('users');
-const usersFromStorage =JSON.parse(usersFromStoragestr)
+const usersFromStoragestr = localStorage.getItem("users");
+const usersFromStorage = JSON.parse(usersFromStoragestr);
 
 const initialState = { users: usersFromStorage || [], edituser: {} };
 const reducerFunc = (state = initialState, action) => {
@@ -25,7 +25,7 @@ const reducerFunc = (state = initialState, action) => {
       });
       console.log("matchedindexx", matchedindex);
       temp[matchedindex] = updateuser;
-      temp[matchedindex].id = 0;
+      // temp[matchedindex].id = 0;
     } else {
       temp = [
         ...state.users,
@@ -45,6 +45,7 @@ const reducerFunc = (state = initialState, action) => {
   if (action.type === "deleteUser") {
     let temp = state.users;
     temp.splice(action.value, 1);
+    localStorage.setItem("users", JSON.stringify(temp));
     console.log("deleted", temp);
     return {
       ...state,

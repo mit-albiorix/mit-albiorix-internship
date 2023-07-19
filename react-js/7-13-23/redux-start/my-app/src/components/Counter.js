@@ -4,7 +4,7 @@ import { useState } from "react";
 
 const Counter = () => {
   const [showCounter, setShowCounter] = useState(true);
-  // const counter = useSelector((state) => state.counter);
+  const counter = useSelector((state) => state.counter);
   const dispatch = useDispatch();
 
   const toggleCounterHandler = () => {
