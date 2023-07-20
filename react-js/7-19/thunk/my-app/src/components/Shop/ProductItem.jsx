@@ -1,17 +1,38 @@
-import { useDispatch } from 'react-redux';
-import { addProduct } from '../../store/cartSlice';
-import Card from '../UI/Card';
-import classes from './ProductItem.module.css';
+import { useDispatch, useSelector } from "react-redux";
+import { addProduct } from "../../store/cartSlice";
+import Card from "../UI/Card";
+import classes from "./ProductItem.module.css";
+import { sendCartData } from "../../store/cart-actions";
+import { useEffect, useState } from "react";
 
 const ProductItem = (props) => {
-  const {id, title, price, description } = props;
-  const item = {id,title,price,description} 
-  const dispatch =useDispatch()
+  const { id, title, price, description } = props;
+  const item = { id, title, price, description };
+  const dispatch = useDispatch();
 
-  const productHandler = ()=>{
+  const cartProducts = useSelector((state) => state.cart.cartProducts);
+  const cart = useSelector((state) => state.cart);
+  const [isInit, setIsinit] = useState(false);
+
+  const productHandler = () => {
     console.log("clicked");
-    dispatch(addProduct(item))
-  }
+    dispatch(addProduct(item));
+    setIsinit(true);
+  };
+
+  useEffect(() => {
+    // if (isInit === false) {
+    //   setIsinit(true);
+    //   return;
+    // } else {
+    //   dispatch(sendCartData(cartProducts));
+    // }
+    if (isInit) {
+      console.log("cartpro", cartProducts);
+      dispatch(sendCartData(cartProducts));
+      setIsinit(false);
+    }
+  }, [cartProducts]);
 
   return (
     <li className={classes.item}>

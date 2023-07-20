@@ -1,5 +1,5 @@
 import { showNotification } from "./uiSlice";
-import { addProduct } from "./cartSlice";
+import { showData } from "./cartSlice";
 
 // action creator function
 export const fetchCartData = () => {
@@ -19,16 +19,21 @@ export const fetchCartData = () => {
     try {
       const cartData = await fetchData();
       console.log("cartdatat", cartData);
+      let loadedData = [];
+
+      // for(let index in cartData){
+      //   loadedData.push({
+      //     id:cartData[index].id,
+      //     price : cartData[index].price,
+      //     title:cartData[index].title,
+      //     qty :cartData[index].qty,
+      //     description:cartData[index].description
+
+      //   })
+      // }
 
       dispatch(
-        // replaceCart({
-        //   cartProducts: cartData.items || [],
-        //   totalQuantity: cartData.totalQuantity,
-        // })
-        
-        addProduct({
-            cartProducts : cartData.cartProducts 
-        })
+        showData(cartData)
       );
     } catch (error) {
       dispatch(
@@ -43,7 +48,7 @@ export const fetchCartData = () => {
 };
 
 // for sending data on api
-export const sendCartData = (cart) => {
+export const sendCartData = (cartProducts) => {
   return async (dispatch) => {
     dispatch(
       showNotification({
@@ -54,16 +59,16 @@ export const sendCartData = (cart) => {
     );
 
     const sendRequest = async () => {
-        console.log("cart",cart)
+      console.log("cart", cartProducts);
       const response = await fetch(
         "https://react-http-5b187-default-rtdb.firebaseio.com/cart.json",
         {
           method: "PUT",
-          body: JSON.stringify(cart),
+          body: JSON.stringify(cartProducts),
           headers: { "Content-Type": "application/json" },
         }
       );
-      console.log("res", response)
+      console.log("res", response);
 
       if (!response.ok) {
         throw new Error("Sending cart data failed.");

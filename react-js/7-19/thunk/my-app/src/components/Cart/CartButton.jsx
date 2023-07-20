@@ -13,12 +13,14 @@ const CartButton = (props) => {
     
   }
 
+  
+
   const cartProducts = useSelector((state) => state.cart.cartProducts);
   console.log("prodsd",cartProducts);
 
   useEffect(()=>{
     if(cartProducts.length > 0){
-      let countTemp = cartProducts?.reduce((firstPro,nextPro)=>
+      let countTemp = cartProducts.reduce((firstPro,nextPro)=>
           firstPro+ nextPro.qty,0)
 
       setCount(countTemp)

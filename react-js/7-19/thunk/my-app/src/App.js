@@ -10,9 +10,10 @@ import { fetchCartData, sendCartData } from "./store/cart-actions";
 
 function App() {
   const showCart = useSelector((state) => state.ui.showCart);
-  const cart = useSelector((state) => state.cart);
+  // const cartProducts = useSelector((state) => state.cart.cartProducts);
+  // const cart =useSelector((state)=>state.cart)
   const notification = useSelector((state) => state.ui.notification);
-  const [isInit, setIsinit] = useState(false);
+
   const dispatch = useDispatch();
 
   // useEffect(() => {
@@ -71,18 +72,11 @@ function App() {
   //   }
   // }, [cart]);
 
-  useEffect(()=>{
-     dispatch(fetchCartData())
-  },[])
+  // useEffect(()=>{
+  
+  // },[])
 
-  useEffect(() => {
-    if (isInit === false) {
-      setIsinit(true);
-      return;
-    } else {
-      dispatch(sendCartData(cart));
-    }
-  }, [cart]);
+ 
 
   return (
     <>
