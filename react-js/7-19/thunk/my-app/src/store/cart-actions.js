@@ -32,9 +32,7 @@ export const fetchCartData = () => {
       //   })
       // }
 
-      dispatch(
-        showData(cartData)
-      );
+      dispatch(showData(cartData));
     } catch (error) {
       dispatch(
         showNotification({
@@ -50,13 +48,13 @@ export const fetchCartData = () => {
 // for sending data on api
 export const sendCartData = (cartProducts) => {
   return async (dispatch) => {
-    dispatch(
-      showNotification({
-        status: "pending",
-        title: "Sending...",
-        message: "Sending cart data!",
-      })
-    );
+    // dispatch(
+    //   showNotification({
+    //     status: "pending",
+    //     title: "Sending...",
+    //     message: "Sending cart data!",
+    //   })
+    // );
 
     const sendRequest = async () => {
       console.log("cart", cartProducts);
@@ -78,13 +76,13 @@ export const sendCartData = (cartProducts) => {
     try {
       await sendRequest();
 
-      dispatch(
-        showNotification({
-          status: "success",
-          title: "Success!",
-          message: "Sent cart data successfully!",
-        })
-      );
+      // dispatch(
+      //   showNotification({
+      //     status: "success",
+      //     title: "Success!",
+      //     message: "Sent cart data successfully!",
+      //   })
+      // );
     } catch (error) {
       dispatch(
         showNotification({

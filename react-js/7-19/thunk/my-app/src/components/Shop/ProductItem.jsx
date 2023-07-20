@@ -21,12 +21,7 @@ const ProductItem = (props) => {
   };
 
   useEffect(() => {
-    // if (isInit === false) {
-    //   setIsinit(true);
-    //   return;
-    // } else {
-    //   dispatch(sendCartData(cartProducts));
-    // }
+   
     if (isInit) {
       console.log("cartpro", cartProducts);
       dispatch(sendCartData(cartProducts));

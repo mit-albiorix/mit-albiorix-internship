@@ -1,35 +1,30 @@
 import { useEffect, useState } from "react";
 import { toggle } from "../../store/uiSlice";
 import classes from "./CartButton.module.css";
-import {useDispatch, useSelector} from 'react-redux'
+import { useDispatch, useSelector } from "react-redux";
 
 const CartButton = (props) => {
+  const [countOfProducts, setCount] = useState(0);
 
-  const [countOfProducts,setCount] = useState(0)
-
-  const dispatch =useDispatch()
-  const toggleCart = ()=>{
-    dispatch(toggle())
-    
-  }
-
-  
+  const dispatch = useDispatch();
+  const toggleCart = () => {
+    dispatch(toggle());
+  };
 
   const cartProducts = useSelector((state) => state.cart.cartProducts);
-  console.log("prodsd",cartProducts);
+  console.log("prodsd", cartProducts);
 
-  useEffect(()=>{
-    if(cartProducts.length > 0){
-      let countTemp = cartProducts.reduce((firstPro,nextPro)=>
-          firstPro+ nextPro.qty,0)
+  useEffect(() => {
+    if (cartProducts.length > 0) {
+      let countTemp = cartProducts.reduce(
+        (firstPro, nextPro) => firstPro + nextPro.qty,
+        0
+      );
 
-      setCount(countTemp)
-  
+      setCount(countTemp);
     }
-  },[cartProducts])
- 
-  
- 
+  }, [cartProducts]);
+
   // console.log("count",count);
   return (
     <button className={classes.button} onClick={toggleCart}>

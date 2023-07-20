@@ -9,6 +9,7 @@ import { fetchCartData, sendCartData } from "./store/cart-actions";
 
 
 function App() {
+  console.log("app");
   const showCart = useSelector((state) => state.ui.showCart);
   // const cartProducts = useSelector((state) => state.cart.cartProducts);
   // const cart =useSelector((state)=>state.cart)
@@ -76,7 +77,12 @@ function App() {
   
   // },[])
 
- 
+  useEffect(() => {
+    // console.log(productsFromApi);
+    console.log("getit");
+    dispatch(fetchCartData());
+    
+  }, []);
 
   return (
     <>

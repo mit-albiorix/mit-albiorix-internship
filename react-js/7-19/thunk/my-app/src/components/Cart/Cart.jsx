@@ -3,17 +3,20 @@ import Card from "../UI/Card";
 import classes from "./Cart.module.css";
 import CartItem from "./CartItem";
 import { useEffect } from "react";
-import { fetchCartData } from "../../store/cart-actions";
+import { fetchCartData, sendCartData } from "../../store/cart-actions";
 
 const Cart = (props) => {
   const dispatch = useDispatch();
   // const productsFromApi = useSelector((state) => state.cart.showProducts);
   const cartProducts = useSelector((state) => state.cart.cartProducts);
 
+
+
   useEffect(() => {
-    // console.log(productsFromApi);
-    dispatch(fetchCartData());
-  }, []);
+    if(cartProducts.length === 0){
+      dispatch(sendCartData(cartProducts));
+    }
+  }, [cartProducts])
 
   //console.log("cart", productsFromApi);
   return (
@@ -22,7 +25,7 @@ const Cart = (props) => {
       <ul>
         {cartProducts?.map((cartProduct, index) => {
           return (
-            <CartItem
+            <CartItem 
               key={index}
               item={{
                 id: cartProduct.id,

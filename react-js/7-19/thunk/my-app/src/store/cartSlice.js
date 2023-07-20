@@ -73,13 +73,30 @@ const cartSlice = createSlice({
         statewithoutProxy.cartProducts.splice(matchedIndexForDecrement, 1);
       }
       state.cartProducts = [...statewithoutProxy.cartProducts];
+      console.clear();
+      console.log(statewithoutProxy.cartProducts);
+
+      if (statewithoutProxy.cartProducts.length > 0) {
+        state.cartProducts = [...statewithoutProxy.cartProducts];
+      }
+
+      console.log("statefor0", state.cartProducts);
     },
+
     showData(state, action) {
       console.log("loaded", action.payload);
 
       state.cartProducts = [...action.payload];
       console.log("fserver", state.cartProducts);
     },
+
+    // removeItem(state,action){
+    //   let statewithoutProxy = JSON.parse(JSON.stringify(state));
+    //   let matchedIndexForDecrement = state.cartProducts.findIndex((product) => {
+    //     return product.id === action.payload;
+    //   });
+
+    // }
     // countOfProducts(state, action) {
     //   if (state.cartProducts.length > 0) {
     //     let countTemp = state.cartProducts.reduce(
@@ -100,5 +117,6 @@ export const {
   increaseProductCart,
   decreaseProductCart,
   showData,
+  removeItem,
   countOfProducts,
 } = cartSlice.actions;

@@ -3,6 +3,7 @@ import classes from "./CartItem.module.css";
 import {
   decreaseProductCart,
   increaseProductCart,
+  removeItem,
 } from "../../store/cartSlice";
 import { useEffect, useState } from "react";
 import { sendCartData } from "../../store/cart-actions";
@@ -16,23 +17,18 @@ const CartItem = (props) => {
 
   const increaseItem = (id) => {
     dispatch(increaseProductCart(id));
-    setIsinit(true)
+    setIsinit(true);
   };
 
   const decreaseItem = (id) => {
     dispatch(decreaseProductCart(id));
-    setIsinit(true)
+    setIsinit(true);
   };
 
   useEffect(() => {
-    // if (isInit === false) {
-    //   setIsinit(true);
-    //   return;
-    // } else {
-    //   dispatch(sendCartData(cartProducts));
-    // }
+    console.log("Inside UseEffect");
     if (isInit) {
-      console.log("cartpro", cartProducts);
+      console.log("card", cartProducts);
       dispatch(sendCartData(cartProducts));
       setIsinit(false);
     }
