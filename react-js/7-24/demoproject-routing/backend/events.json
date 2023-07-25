@@ -1,11 +1,1 @@
-{
-  "events": [
-    {
-      "id": "e1",
-      "title": "A dummy event",
-      "date": "2023-02-22",
-      "image": "https://blog.hubspot.de/hubfs/Germany/Blog_images/Optimize_Marketing%20Events%20DACH%202021.jpg",
-      "description": "Join this amazing event and connect with fellow developers."
-    }
-  ]
-}
+{"events":[{"title":"rgfdd","image":"https://www.shutterstock.com/shutterstock/photos/1186359178/display_1500/stock-photo-a-lone-wooden-church-at-dusk-with-sunset-clouds-in-kansas-american-midwest-prairie-1186359178.jpg","date":"2023-06-30","description":"fgf","id":"59a2a942-9b46-458d-b06b-98e0b2b639fb"},{"title":"mit","image":"https://www.shutterstock.com/shutterstock/photos/1186359178/display_1500/stock-photo-a-lone-wooden-church-at-dusk-with-sunset-clouds-in-kansas-american-midwest-prairie-1186359178.jpg","date":"2023-07-01","description":"ffefe","id":"ef66852f-6d4e-4172-84ac-17f5c62ea15a"},{"title":"sfe","image":"https://www.shutterstock.com/shutterstock/photos/1186359178/display_1500/stock-photo-a-lone-wooden-church-at-dusk-with-sunset-clouds-in-kansas-american-midwest-prairie-1186359178.jpg","date":"2023-07-07","description":"dfef","id":"6447976c-6d45-4024-9c47-634ecf931b66"},{"id":"e1","title":"A dummy event","date":"2023-02-22","image":"https://blog.hubspot.de/hubfs/Germany/Blog_images/Optimize_Marketing%20Events%20DACH%202021.jpg","description":"Join this amazing event and connect with fellow developers."}]}
