@@ -1,5 +1,10 @@
 import React, { useEffect } from "react";
-import { json, useRouteLoaderData, useParams, redirect } from "react-router-dom";
+import {
+  json,
+  useRouteLoaderData,
+  useParams,
+  redirect,
+} from "react-router-dom";
 import EventItem from "../components/EventItem";
 
 function EventDetails() {
@@ -35,18 +40,18 @@ export async function loader({ request, params }) {
 }
 
 export async function action({ params, request }) {
-  const eventId = params.eventId;
-  const response = await fetch('http://localhost:8080/events/' + eventId, {
+  const id = params.eventId;
+  const response = await fetch("http://localhost:8080/events/" + id, {
     method: request.method,
   });
 
   if (!response.ok) {
     throw json(
-      { message: 'Could not delete event.' },
+      { message: "Could not delete event." },
       {
         status: 500,
       }
     );
   }
-  return redirect('/events');
+  return redirect("/events");
 }
