@@ -8,7 +8,9 @@ const Counter = () => {
   const dispatch = useDispatch();
 
   const toggleCounterHandler = () => {
-    setShowCounter((prevState) =>{ return(!prevState)});
+    setShowCounter((prevState) => {
+      return !prevState;
+    });
     // dispatch({type : "toggle"})
   };
 

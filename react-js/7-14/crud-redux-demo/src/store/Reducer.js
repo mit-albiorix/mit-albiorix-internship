@@ -3,7 +3,7 @@ import { createStore } from "redux";
 const usersFromStoragestr = localStorage.getItem("users");
 const usersFromStorage = JSON.parse(usersFromStoragestr);
 
-const initialState = { users: usersFromStorage || [], edituser: {} };
+const initialState = { users: usersFromStorage || [], edituser: {},searchedUsers :[] };
 const reducerFunc = (state = initialState, action) => {
   let temp = [];
   if (action.type === "addUser") {
@@ -61,6 +61,20 @@ const reducerFunc = (state = initialState, action) => {
       ...state,
       edituser: tempedituser,
     };
+  }
+  if(action.type === 'search'){
+    console.log("search",action.value);
+    let temp = state.users;
+    console.log("stateusers",temp);
+
+    let searchResults  = temp.filter((user)=>{
+      return user.name === action.value
+    })
+    console.log("searchresult",searchResults);
+    return {
+      ...state,
+      searchedUsers : searchResults
+    }
   }
   return state;
 };

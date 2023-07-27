@@ -14,15 +14,15 @@ function Form() {
   });
 
   useEffect(() => {
-    if (edituser.id) {
-      console.log("edit",edituser.id);
+    if (edituser?.id) {
+      console.log("edit", edituser.id);
       setFormData({
         name: edituser.name,
         password: edituser.password,
         id: edituser.id,
       });
     }
-  }, [edituser.id]);
+  }, [edituser]);
 
   const inputHandler = (event) => {
     setFormData((prevState) => {
@@ -47,6 +47,9 @@ function Form() {
   return (
     <>
       <div className="container">
+        <h3 className="mt-5" style={{ textAlign: "center" }}>
+          Add User
+        </h3>
         <form onSubmit={formHandler}>
           <div className="form-group">
             <label htmlFor="name">Name</label>
@@ -75,8 +78,7 @@ function Form() {
           </div>
 
           <button type="submit" className="btn btn-primary">
-            
-            {!edituser.id ? "Add USer" : "Update"}
+            {!edituser?.id ? "Add User" : "Update"}
           </button>
         </form>
       </div>
