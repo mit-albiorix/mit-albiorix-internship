@@ -2,22 +2,20 @@ import React, { useState } from "react";
 import "./Search.css";
 import { useDispatch } from "react-redux";
 
-function Search() {
-  const [searchText, setSearchText] = useState("");
+function Search({ searchText, setSearchText }) {
   const dispatch = useDispatch();
 
-  const searchInputHandler =  (e) => {
+  const searchInputHandler = (e) => {
     console.log(e.target.value);
-     setSearchText(e.target.value);
+    setSearchText(e.target.value);
     // dispatch({ type: "search", value: e.target.value });
   };
 
-  const searchFormHandler = (e) =>{
+  const searchFormHandler = (e) => {
     e.preventDefault();
-     dispatch({ type: "search", value: searchText });
-     setSearchText("")
-
-  }
+    //  dispatch({ type: "search", value: searchText });
+    //  setSearchText("")
+  };
 
   return (
     // <div>
@@ -48,15 +46,25 @@ function Search() {
     //   </div>
     // </div>
     <>
-    <div className="container mt-5">
-    <form className="form-inline" onSubmit={searchFormHandler}>
-    <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" onChange={searchInputHandler} value={searchText}/>
-    <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-  </form>
-    </div>
-  
+      <div className="container mt-5">
+        <form className="form-inline" onSubmit={searchFormHandler}>
+          <input
+            className="form-control mr-sm-2"
+            type="search"
+            placeholder="Search"
+            aria-label="Search"
+            onChange={searchInputHandler}
+            value={searchText}
+          />
+          {/* <button
+            className="btn btn-outline-success my-2 my-sm-0"
+            type="submit"
+          >
+            Search
+          </button> */}
+        </form>
+      </div>
     </>
-    
   );
 }
 

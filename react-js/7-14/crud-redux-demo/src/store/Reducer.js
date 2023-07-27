@@ -3,7 +3,11 @@ import { createStore } from "redux";
 const usersFromStoragestr = localStorage.getItem("users");
 const usersFromStorage = JSON.parse(usersFromStoragestr);
 
-const initialState = { users: usersFromStorage || [], edituser: {},searchedUsers :[] };
+const initialState = {
+  users: usersFromStorage || [],
+  edituser: {},
+  
+};
 const reducerFunc = (state = initialState, action) => {
   let temp = [];
   if (action.type === "addUser") {
@@ -44,7 +48,19 @@ const reducerFunc = (state = initialState, action) => {
 
   if (action.type === "deleteUser") {
     let temp = state.users;
-    temp.splice(action.value, 1);
+    // temp.splice(action.value, 1);
+    console.clear();
+console.log("temp",temp);
+    let matchedindex =temp.findIndex((user)=>{
+      return user.id === action.value.id
+    })
+    console.log("matchedindex",matchedindex);
+
+    temp.splice(matchedindex,1)
+    // let updatedData = temp.filter((user)=>{
+    //   return 
+    // })
+
     localStorage.setItem("users", JSON.stringify(temp));
     console.log("deleted", temp);
     return {
@@ -62,20 +78,7 @@ const reducerFunc = (state = initialState, action) => {
       edituser: tempedituser,
     };
   }
-  if(action.type === 'search'){
-    console.log("search",action.value);
-    let temp = state.users;
-    console.log("stateusers",temp);
-
-    let searchResults  = temp.filter((user)=>{
-      return user.name === action.value
-    })
-    console.log("searchresult",searchResults);
-    return {
-      ...state,
-      searchedUsers : searchResults
-    }
-  }
+ 
   return state;
 };
 
