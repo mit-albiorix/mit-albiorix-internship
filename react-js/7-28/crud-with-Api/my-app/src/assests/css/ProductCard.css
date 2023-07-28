@@ -1,0 +1,26 @@
+.css-cuefkz-MuiContainer-root {
+  max-width: 1350px !important;
+}
+.css-12zvdn5{
+    background-color: #6f6d5c38 !important;
+}
+.css-xk9sbq {
+    background-color: #cfe8fc !important;
+    height: 500vh !important;
+    margin-top: 80px !important;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    justify-content: space-around !important;
+}
+
+
+.css-zvijn3 {
+    background-color: #cfe8fc;
+    height: 100%;
+    margin-top: 80px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
