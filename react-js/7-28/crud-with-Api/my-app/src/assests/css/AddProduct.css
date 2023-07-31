@@ -1,0 +1,25 @@
+.css-1u3bzj6-MuiFormControl-root-MuiTextField-root {
+  width: 50% !important;
+} 
+
+.css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root{
+  margin-bottom: 5px;
+}
+
+
+.css-md26zr-MuiInputBase-root-MuiOutlinedInput-root {
+  width: 550px !important;
+}
+
+/* .form-container{
+  background-color: aliceblue !important;
+  width: 60%;
+
+} */
+
+.css-0 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

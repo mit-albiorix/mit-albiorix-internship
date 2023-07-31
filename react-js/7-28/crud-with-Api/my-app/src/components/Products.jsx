@@ -4,21 +4,26 @@ import Container from "@mui/material/Container";
 
 import ProductCard from "./ProductCard";
 import Button from "@mui/material/Button";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 function Products() {
-  const [products, setProducts] = useState();
-  const navigate =useNavigate()
+  // const [products, setProducts] = useState();
+  const dispatch = useDispatch();
+  const products =useSelector((state)=>state.products)
+  const navigate = useNavigate();
 
-  const newProductHandler = () =>{
-    navigate("addProduct")
-  }
+  const newProductHandler = () => {
+    navigate("addProduct");
+  };
 
   useEffect(() => {
     axios
       .get("https://fakestoreapi.com/products")
       .then((response) => {
-        setProducts(response.data);
+        // setProducts(response.data);
+        dispatch({ type: "apiData", value: response.data });
+
         console.log("respone", response.data);
       })
       .catch((error) => {
@@ -35,7 +40,7 @@ function Products() {
         </Button>
       </Container>
 
-      <ProductCard products={products} />
+      <ProductCard />
     </>
   );
 }

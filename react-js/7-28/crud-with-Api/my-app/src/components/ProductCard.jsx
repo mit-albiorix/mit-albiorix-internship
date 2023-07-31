@@ -17,19 +17,22 @@ import Container from "@mui/material/Container";
 // import theme from "@mui/material/theme"
 
 import "./../assests/css/ProductCard.css";
+import { useSelector } from "react-redux";
 
-function ProductCard({ products }) {
+function ProductCard() {
   const theme = {
     spacing: 8,
   };
 
+  const productsdata = useSelector((state) => state.products);
+
   return (
     <>
       <CssBaseline />
-     
+
       <Container maxWidth="sm">
         <Box sx={{ bgcolor: "#cfe8fc", height: ":fullscreen", mt: 10 }}>
-          {products?.map((product) => {
+          {productsdata?.map((product) => {
             return (
               <Card sx={{ maxWidth: 345, marginTop: "20px" }} key={product.id}>
                 <CardHeader
