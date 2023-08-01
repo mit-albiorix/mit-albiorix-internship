@@ -1,6 +1,6 @@
 import { createStore } from "redux";
 
-let initialState = { products: [], addProduct: {} };
+let initialState = { products: [] };
 const crudReducer = (state = initialState, action) => {
   if (action.type === "apiData") {
     return {
@@ -24,13 +24,35 @@ const crudReducer = (state = initialState, action) => {
     };
   }
 
-  // if (action.type === "deleteProduct") {
-  //   let matchedIndex = products.findIndex((product) => {
-  //     return product.id === id;
-  //   });
-  //   console.log("matched", matchedIndex);
-  //   return {};
-  // }
+  if (action.type === "deleteProduct") {
+    let temp = state.products;
+    let matchedIndex = temp.findIndex((product) => {
+      return product.id === action.value;
+    });
+    console.log("matched", matchedIndex);
+    temp.splice(matchedIndex, 1);
+
+    return {
+      ...state,
+      products: [...temp],
+    };
+  }
+  if (action.type === "updateProduct") {
+    let temp = state.products;
+    console.log("temppp", temp);
+    console.log("updateidd", action.value.id);
+    let matchedIndex = temp.findIndex((product) => {
+      return product.id == action.value.id;
+    });
+    // console.clear();
+    console.log("matchedupdate", matchedIndex);
+
+    temp[matchedIndex] = action.value;
+    return {
+      ...state,
+      products: [...temp],
+    };
+  }
   return state;
 };
 const store = createStore(crudReducer);

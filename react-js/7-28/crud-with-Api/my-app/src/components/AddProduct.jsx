@@ -5,7 +5,7 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 // import Input from "@material-ui/core/Input";
 // import Input from "@mui/material/Input";
-import { Form } from "react-router-dom";
+import { Form, useLocation, useSearchParams } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -52,15 +52,46 @@ function AddProduct() {
   console.log("products", products);
   const dispatch = useDispatch();
 
-  const onSubmit = (data) => {
-    console.log("data", data);
-    let length = products.length;
-    let id = length + 1;
-    console.log("len", length);
-    let tempdata = { ...data, id: id };
+  const [searchParams] = useSearchParams();
+  let editid = searchParams.get("id");
+  console.log("editid", editid);
+  console.log("editproducts", products);
+  let editUser = {};
+  if (editid) {
+    const matchedIndexForEdit = products?.findIndex((product) => {
+      return product.id == editid;
+    });
+    console.log("matchedEdit", matchedIndexForEdit);
 
+    editUser = {
+      id: products[matchedIndexForEdit]?.id,
+      title: products[matchedIndexForEdit].title,
+      image: products[matchedIndexForEdit].image,
+      description: products[matchedIndexForEdit].description,
+      category: products[matchedIndexForEdit].category,
+      price: products[matchedIndexForEdit].price,
+
+      rate: products[matchedIndexForEdit].rating.rate,
+      count: products[matchedIndexForEdit].rating.count,
+    };
+    console.log("edituytser", editUser);
+  }
+
+  const onSubmit = (data) => {
+    let tempdata;
+    if (!editid) {
+      console.log("data", data);
+      let length = products.length;
+      let id = length + 1;
+      console.log("len", length);
+      tempdata = { ...data, id: id };
+    } else {
+      tempdata = data;
+      console.log("updatetempd", tempdata);
+    }
+    console.log("datadddd", data);
     let addedData = {
-      id: tempdata.id,
+      id: editid ? editid : tempdata.id,
       title: tempdata.title,
       image: tempdata.image,
       description: tempdata.description,
@@ -76,29 +107,42 @@ function AddProduct() {
     console.log("added", addedData);
 
     // console.log("addedddddd", addedData);
-    reset();
+
     // products.push(data);
-    axios
-      .post("https://fakestoreapi.com/products", data)
-      .then(function (response) {
-        console.log(response);
-        dispatch({ type: "addProduct", value: addedData });
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    // console.clear();
+    console.log("editiddddd", editid);
+    if (editid) {
+      reset();
+      editid = null;
+      dispatch({ type: "updateProduct", value: addedData });
+    } else {
+      axios
+        .post("https://fakestoreapi.com/products", data)
+        .then(function (response) {
+          console.log(response);
+          console.log("editidddd", editid);
+          reset();
+          dispatch({ type: "addProduct", value: addedData });
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
   };
 
+  // console.log("id", editid);
   return (
     <>
       <Container maxWidth="sm">
         <Box>
-          <h2>Add Product</h2>
+          {!editid ? <h2>Add Product</h2> : <h2>Update Product</h2>}
           <form onSubmit={handleSubmit(onSubmit)}>
             <div>
               <TextField
                 id="outlined-basic"
                 label="Title"
+                // defaultValue=""
+                defaultValue={editUser.title}
                 variant="outlined"
                 className="textfield"
                 fullWidth
@@ -117,6 +161,7 @@ function AddProduct() {
                 label="image"
                 variant="outlined"
                 className="textfield"
+                defaultValue={editUser.image}
                 fullWidth
                 // name="title"
                 {...register("image")}
@@ -128,7 +173,7 @@ function AddProduct() {
             </div>
 
             <div>
-              <CategoryTag />
+              <CategoryTag editcategory={editUser.category} />
             </div>
 
             <div>
@@ -136,6 +181,7 @@ function AddProduct() {
                 id="outlined-basic"
                 label="Description"
                 variant="outlined"
+                defaultValue={editUser.description}
                 fullWidth
                 // name="description"
                 {...register("description")}
@@ -150,6 +196,7 @@ function AddProduct() {
                 id="outlined-basic"
                 label="Price"
                 variant="outlined"
+                defaultValue={editUser.price}
                 fullWidth
                 // name="price"
                 {...register("price")}
@@ -166,6 +213,7 @@ function AddProduct() {
                 label="rate"
                 variant="outlined"
                 type="number"
+                defaultValue={editUser.rate}
                 fullWidth
                 // name="rate"
                 {...register("rate")}
@@ -184,6 +232,7 @@ function AddProduct() {
                 variant="outlined"
                 name="count"
                 type="number"
+                defaultValue={editUser.count}
                 fullWidth
                 {...register("count")}
                 error={!!errors.count}
@@ -194,7 +243,7 @@ function AddProduct() {
             </div>
             <div>
               <Button variant="contained" type="submit">
-                Add Product
+                {!editid ? "Add Product" : "Update Product"}
               </Button>
             </div>
           </form>

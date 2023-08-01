@@ -19,37 +19,37 @@ import Container from "@mui/material/Container";
 import "./../assests/css/ProductCard.css";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@mui/material";
+import { createSearchParams, useNavigate } from "react-router-dom";
 
 function ProductCard() {
   const theme = {
     spacing: 8,
   };
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const productsdata = useSelector((state) => state.products);
-
-  const addProduct = useSelector((state) => state.addProduct);
-
-  useEffect(() => {
-    console.log("in products add", addProduct);
-    console.log(productsdata.length);
-    if (productsdata.length < 20) {
-      console.log("in products add", addProduct);
-      productsdata.unshift(addProduct);
-    }
-  }, [addProduct]);
 
   console.log("final", productsdata);
 
   const deleteHandler = (id) => {
-    let matchedIndex = productsdata.findIndex((product) => {
-      return product.id === id;
-    });
-    console.log("matched", matchedIndex);
-    dispatch({type:"deleteProduct",value:id})
+    // let matchedIndex = productsdata.findIndex((product) => {
+    //   return product.id === id;
+    // });
+    // console.log("matched", matchedIndex);
+    // navigate('addProduct')
+    dispatch({ type: "deleteProduct", value: id });
   };
 
-  const editHandler = () => {};
+  const editHandler = (id) => {
+    // dispatch({type:"editProduct",value:id})
+    console.log("editid", id);
+    navigate({
+      pathname: "addProduct",
+      search: createSearchParams({
+        id: id,
+      }).toString(),
+    });
+  };
 
   return (
     <>
@@ -98,7 +98,7 @@ function ProductCard() {
                   color="info"
                   type="submit"
                   onClick={() => {
-                    editHandler(productsdata.id);
+                    editHandler(product.id);
                   }}
                 >
                   Edit

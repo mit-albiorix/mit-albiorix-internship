@@ -16,7 +16,7 @@ function Products() {
   const newProductHandler = () => {
     navigate("addProduct");
   };
-  console.log("prolen", products.length);
+  console.log("prolen", products?.length);
   useEffect(() => {
     if (products.length <= 20) {
       axios
