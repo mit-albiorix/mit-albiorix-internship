@@ -10,25 +10,27 @@ import { useDispatch, useSelector } from "react-redux";
 function Products() {
   // const [products, setProducts] = useState();
   const dispatch = useDispatch();
-  const products =useSelector((state)=>state.products)
+  const products = useSelector((state) => state.products);
   const navigate = useNavigate();
 
   const newProductHandler = () => {
     navigate("addProduct");
   };
-
+  console.log("prolen", products.length);
   useEffect(() => {
-    axios
-      .get("https://fakestoreapi.com/products")
-      .then((response) => {
-        // setProducts(response.data);
-        dispatch({ type: "apiData", value: response.data });
+    if (products.length <= 20) {
+      axios
+        .get("https://fakestoreapi.com/products")
+        .then((response) => {
+          // setProducts(response.data);
+          dispatch({ type: "apiData", value: response.data });
 
-        console.log("respone", response.data);
-      })
-      .catch((error) => {
-        console.log("err", error);
-      });
+          console.log("respone", response.data);
+        })
+        .catch((error) => {
+          console.log("err", error);
+        });
+    }
   }, []);
 
   return (

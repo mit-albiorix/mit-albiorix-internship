@@ -25,20 +25,12 @@ import axios from "axios";
 
 const schema = yup
   .object({
-    title: yup.string().required().max(2),
+    title: yup.string().required().min(2),
     image: yup.string().url().required(),
     // category: yup.required(),
-    price: yup
-      .number()
-      .positive()
-      .required()
-      .typeError("price is required "),
-    description: yup.string().required(),
-    rate: yup
-      .number()
-      .positive()
-      .required()
-      .typeError("rate is required "),
+    price: yup.number().positive().required().typeError("price is required "),
+    description: yup.string().required().min(10),
+    rate: yup.number().positive().required().typeError("rate is required "),
     count: yup
       .number()
       .positive()
@@ -57,45 +49,45 @@ function AddProduct() {
 
   const { errors } = formState;
   const products = useSelector((state) => state.products);
+  console.log("products", products);
+  const dispatch = useDispatch();
 
   const onSubmit = (data) => {
     console.log("data", data);
-    const sendData = {
-      title: data.title,
-      image: data.image,
-      price: data.price,
-      description: data.description,
-      // rating: {
-        //   rate: data.rate,
-        //   count: data.count,
-        // },
-      };
-      reset();
+    let length = products.length;
+    let id = length + 1;
+    console.log("len", length);
+    let tempdata = { ...data, id: id };
+
+    let addedData = {
+      id: tempdata.id,
+      title: tempdata.title,
+      image: tempdata.image,
+      description: tempdata.description,
+      category: tempdata.category,
+      price: tempdata.price,
+      rating: {
+        rate: tempdata.rate,
+        count: tempdata.count,
+      },
+    };
+
+    // products.unshift(addedData);
+    console.log("added", addedData);
+
+    // console.log("addedddddd", addedData);
+    reset();
     // products.push(data);
     axios
-      .post("https://fakestoreapi.com/products", sendData)
+      .post("https://fakestoreapi.com/products", data)
       .then(function (response) {
         console.log(response);
-        axios
-          .get("https://fakestoreapi.com/products")
-          .then((res) => {
-            // setProducts(response.data);
-            console.log("rs",res);
-
-            console.log("respone", res.data);
-          })
-          .catch((err) => {
-            console.log("err", err);
-          });
+        dispatch({ type: "addProduct", value: addedData });
       })
       .catch(function (error) {
         console.log(error);
       });
   };
-
-  // useEffect(()=>{
-  //   reset(formData)
-  // },[formData])
 
   return (
     <>
@@ -136,18 +128,7 @@ function AddProduct() {
             </div>
 
             <div>
-              {/* <TextField
-                id="outlined-basic"
-                label="Category"
-                variant="outlined"
-                // name="category"
-                {...register("category")}
-                error={!!errors.category}
-              /> */}
               <CategoryTag />
-              <p style={{ color: "red" }}>
-                {errors.category && errors.category?.message}
-              </p>
             </div>
 
             <div>

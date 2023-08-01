@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 // import * as React from "react";
 import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
@@ -17,14 +17,39 @@ import Container from "@mui/material/Container";
 // import theme from "@mui/material/theme"
 
 import "./../assests/css/ProductCard.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Button } from "@mui/material";
 
 function ProductCard() {
   const theme = {
     spacing: 8,
   };
+  const dispatch = useDispatch();
 
   const productsdata = useSelector((state) => state.products);
+
+  const addProduct = useSelector((state) => state.addProduct);
+
+  useEffect(() => {
+    console.log("in products add", addProduct);
+    console.log(productsdata.length);
+    if (productsdata.length < 20) {
+      console.log("in products add", addProduct);
+      productsdata.unshift(addProduct);
+    }
+  }, [addProduct]);
+
+  console.log("final", productsdata);
+
+  const deleteHandler = (id) => {
+    let matchedIndex = productsdata.findIndex((product) => {
+      return product.id === id;
+    });
+    console.log("matched", matchedIndex);
+    dispatch({type:"deleteProduct",value:id})
+  };
+
+  const editHandler = () => {};
 
   return (
     <>
@@ -53,9 +78,31 @@ function ProductCard() {
 
                 <CardContent>
                   <Typography>Price :{product.price}</Typography>
-                  <Typography>Rating :{product.rating.rate}</Typography>
-                  <Typography>Count : {product.rating.count}</Typography>
+                  <Typography>Rating :{product.rating?.rate}</Typography>
+                  <Typography>Count : {product.rating?.count}</Typography>
                 </CardContent>
+
+                <Button
+                  variant="contained"
+                  color="error"
+                  type="submit"
+                  onClick={() => {
+                    deleteHandler(product.id);
+                  }}
+                >
+                  Delete
+                </Button>
+
+                <Button
+                  variant="contained"
+                  color="info"
+                  type="submit"
+                  onClick={() => {
+                    editHandler(productsdata.id);
+                  }}
+                >
+                  Edit
+                </Button>
               </Card>
             );
           })}
