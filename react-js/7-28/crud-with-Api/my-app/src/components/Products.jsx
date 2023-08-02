@@ -11,6 +11,8 @@ function Products() {
   // const [products, setProducts] = useState();
   const dispatch = useDispatch();
   const products = useSelector((state) => state.products);
+  const isFetched = useSelector((state) => state.isFetched);
+
   const navigate = useNavigate();
 
   const newProductHandler = () => {
@@ -18,11 +20,12 @@ function Products() {
   };
   console.log("prolen", products?.length);
   useEffect(() => {
-    if (products.length <= 20) {
+    if (isFetched === false) {
       axios
         .get("https://fakestoreapi.com/products")
         .then((response) => {
           // setProducts(response.data);
+
           dispatch({ type: "apiData", value: response.data });
 
           console.log("respone", response.data);
@@ -48,3 +51,8 @@ function Products() {
 }
 
 export default Products;
+
+
+// export const loaderData = async () =>{
+
+// }

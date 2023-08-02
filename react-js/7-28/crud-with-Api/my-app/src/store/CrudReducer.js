@@ -1,11 +1,12 @@
 import { createStore } from "redux";
 
-let initialState = { products: [] };
+let initialState = { products: [], isFetched: false };
 const crudReducer = (state = initialState, action) => {
   if (action.type === "apiData") {
     return {
       ...state,
       products: action.value,
+      isFetched: true,
     };
   }
 

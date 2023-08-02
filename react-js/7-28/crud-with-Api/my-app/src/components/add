@@ -1,3 +1,7 @@
+
+
+
+
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import { useForm } from "react-hook-form";
@@ -33,7 +37,7 @@ const schema = yup
   .object({
     title: yup.string().required().min(2),
     image: yup.string().url().required(),
-    category: yup.string().required("Category is required"),
+    // category: yup.required(),
     price: yup.number().positive().required().typeError("price is required "),
     description: yup.string().required().min(10),
     rate: yup.number().positive().required().typeError("rate is required "),
@@ -48,20 +52,10 @@ const schema = yup
 
 function AddProduct() {
   // const [formData,setFromData] =useState({})
-  const {
-    control,
-    register,
-    handleSubmit,
-    reset,
-    formState,
-    resetField,
-    setValue,
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
-
-  const [editid, seteditid] = useState();
-  const [editUser, setEditUser] = useState(null);
+  const { control, register, handleSubmit, reset, formState, resetField } =
+    useForm({
+      resolver: yupResolver(schema),
+    });
   const isFetched = useSelector((state) => state.isFetched);
   const { errors } = formState;
   const products = useSelector((state) => state.products);
@@ -70,7 +64,33 @@ function AddProduct() {
   const navigate = useNavigate();
 
   const [searchParams] = useSearchParams();
-  // let editid;
+
+  let editid = searchParams.get("id");
+  console.log("editid", editid);
+  console.log("editproducts", products);
+  let editUser = {};
+
+  // useEffect(() => {
+  if (editid) {
+    const matchedIndexForEdit = products?.findIndex((product) => {
+      return product.id == editid;
+    });
+    console.log("matchedEdit", matchedIndexForEdit);
+
+    editUser = {
+      id: products[matchedIndexForEdit]?.id,
+      title: products[matchedIndexForEdit]?.title,
+      image: products[matchedIndexForEdit]?.image,
+      description: products[matchedIndexForEdit]?.description,
+      category: products[matchedIndexForEdit]?.category,
+      price: products[matchedIndexForEdit]?.price,
+
+      rate: products[matchedIndexForEdit]?.rating.rate,
+      count: products[matchedIndexForEdit]?.rating.count,
+    };
+    console.log("edituytser", editUser);
+  }
+
   useEffect(() => {
     if (isFetched === false) {
       axios
@@ -88,40 +108,7 @@ function AddProduct() {
     }
   }, []);
 
-  let matchedIndexForEdit;
-  useEffect(() => {
-    seteditid(searchParams.get("id"));
-    console.log("editid", editid);
-    console.log("editproducts", products);
-
-    if (editid) {
-      matchedIndexForEdit = products?.findIndex((product) => {
-        return product.id == editid;
-      });
-      console.log("matchedEdit", matchedIndexForEdit);
-
-      setValue("id", products[matchedIndexForEdit]?.id);
-      setValue("title", products[matchedIndexForEdit]?.title);
-      setValue("image", products[matchedIndexForEdit]?.image);
-      setValue("description", products[matchedIndexForEdit]?.description);
-      console.log("category");
-      setValue("category", products[matchedIndexForEdit]?.category);
-      setValue("price", products[matchedIndexForEdit]?.price);
-      setValue("rate", products[matchedIndexForEdit]?.rating.rate);
-      setValue("count", products[matchedIndexForEdit]?.rating.count);
-    }
-
-    // return () => {
-    //   setEditUser(null);
-    //   seteditid();
-    // };
-  }, [products, editid]);
-
-  const handleChange = (e) => {
-    console.log("e", e.target.value);
-    setValue("title", products[matchedIndexForEdit]?.title);
-  };
-
+  // }, [editid]);
   const onSubmit = (data) => {
     let tempdata;
     if (!editid) {
@@ -158,8 +145,7 @@ function AddProduct() {
     console.log("editiddddd", editid);
     if (editid) {
       reset();
-
-      seteditid(0);
+      editid = 0;
       console.clear();
       console.log("editid", editid);
       navigate("/");
@@ -170,9 +156,7 @@ function AddProduct() {
         .then(function (response) {
           console.log(response);
           console.log("editidddd", editid);
-          navigate("/");
-          // reset();
-          // setValue("category", "");
+          reset();
           dispatch({ type: "addProduct", value: addedData });
         })
         .catch(function (error) {
@@ -181,15 +165,11 @@ function AddProduct() {
     }
   };
 
-  console.log("DEBUG formState", formState);
-
   // console.log("id", editid);
   return (
     <>
-      {/* {editUser && ( */}
       <Container maxWidth="sm">
         <Box>
-          {console.log("firt", editUser)}
           {!editid ? <h2>Add Product</h2> : <h2>Update Product</h2>}
           <form onSubmit={handleSubmit(onSubmit)}>
             <div>
@@ -197,10 +177,7 @@ function AddProduct() {
                 id="outlined-basic"
                 label="Title"
                 // defaultValue=""
-                // defaultValue={editUser?.title}
-                autoFocus
-                // value={editUser?.title}
-                // onChange={handleChange}
+                defaultValue={editUser.title}
                 variant="outlined"
                 className="textfield"
                 fullWidth
@@ -219,9 +196,7 @@ function AddProduct() {
                 label="image"
                 variant="outlined"
                 className="textfield"
-                // defaultValue={editUser?.image}
-                autoFocus
-                // value={editUser?.image}
+                defaultValue={editUser.image}
                 fullWidth
                 // name="title"
                 {...register("image")}
@@ -234,13 +209,11 @@ function AddProduct() {
 
             <div>
               <CategoryTag
-                editcategory="category"
-                // register={register}
-                register={{ ...register("category") }}
-                errors={errors}
-                // error={!!errors.category}
+                editcategory={editUser.category}
+                reg={{ ...register("category") }}
+                err={errors}
                 control={control}
-                setValue={setValue}
+                // category={category}
               />
             </div>
 
@@ -249,9 +222,7 @@ function AddProduct() {
                 id="outlined-basic"
                 label="Description"
                 variant="outlined"
-                autoFocus
-                // defaultValue={editUser?.description}
-                // value={editUser?.description}
+                defaultValue={editUser.description}
                 fullWidth
                 // name="description"
                 {...register("description")}
@@ -266,9 +237,7 @@ function AddProduct() {
                 id="outlined-basic"
                 label="Price"
                 variant="outlined"
-                autoFocus
-                // defaultValue={editUser?.price}
-                // value={editUser?.price}
+                defaultValue={editUser.price}
                 fullWidth
                 // name="price"
                 {...register("price")}
@@ -285,9 +254,7 @@ function AddProduct() {
                 label="rate"
                 variant="outlined"
                 type="number"
-                autoFocus
-                // defaultValue={editUser?.rate}
-                // value={editUser?.rate}
+                defaultValue={editUser.rate}
                 fullWidth
                 // name="rate"
                 {...register("rate")}
@@ -306,9 +273,7 @@ function AddProduct() {
                 variant="outlined"
                 name="count"
                 type="number"
-                autoFocus
-                // defaultValue={editUser?.count}
-                // value={editUser?.count}
+                defaultValue={editUser.count}
                 fullWidth
                 {...register("count")}
                 error={!!errors.count}
@@ -325,7 +290,6 @@ function AddProduct() {
           </form>
         </Box>
       </Container>
-      {/* )} */}
     </>
   );
 }
