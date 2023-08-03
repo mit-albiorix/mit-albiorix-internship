@@ -1,42 +1,22 @@
 import React, { useEffect, useState } from "react";
-import Select from "react-select";
+import { TextField, Box, Button, Container } from "@mui/material";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import TextField from "@mui/material/TextField";
-import Box from "@mui/material/Box";
-// import Input from "@material-ui/core/Input";
-// import Input from "@mui/material/Input";
-import {
-  Form,
-  redirect,
-  useLocation,
-  useNavigate,
-  useSearchParams,
-} from "react-router-dom";
-import Button from "@mui/material/Button";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
-import {
-  Container,
-  FormControl,
-  InputLabel,
-  Input,
-  FormHelperText,
-} from "@mui/material";
-
-import "../assests/css/AddProduct.css";
-import CategoryTag from "./selectCategory/CategoryTag";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import "../assests/css/AddProduct.css";
 
 const schema = yup
   .object({
     title: yup.string().required().min(2),
     image: yup.string().url().required(),
-    category: yup.string().required("Category is required"),
-    price: yup.number().positive().required().typeError("price is required "),
+    category: yup.string().required(),
+    price: yup.number().required().typeError("price is required "),
     description: yup.string().required().min(10),
-    rate: yup.number().positive().required().typeError("rate is required "),
+    rate: yup.number().required().typeError("rate is required "),
     count: yup
       .number()
       .positive()
@@ -47,94 +27,69 @@ const schema = yup
   .required();
 
 function AddProduct() {
-  // const [formData,setFromData] =useState({})
-  const {
-    control,
-    register,
-    handleSubmit,
-    reset,
-    formState,
-    resetField,
-    setValue,
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
+  const { register, handleSubmit, reset, formState, getValues, setValue } =
+    useForm({
+      resolver: yupResolver(schema),
+    });
 
   const [editid, seteditid] = useState();
-  const [editUser, setEditUser] = useState(null);
+
   const isFetched = useSelector((state) => state.isFetched);
   const { errors } = formState;
   const products = useSelector((state) => state.products);
-  console.log("products", products);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [searchParams] = useSearchParams();
-  // let editid;
+
   useEffect(() => {
     if (isFetched === false) {
       axios
         .get("https://fakestoreapi.com/products")
         .then((response) => {
-          // setProducts(response.data);
-
           dispatch({ type: "apiData", value: response.data });
-
-          console.log("respone", response.data);
         })
         .catch((error) => {
-          console.log("err", error);
+          
         });
     }
   }, []);
 
   let matchedIndexForEdit;
+  let category;
   useEffect(() => {
     seteditid(searchParams.get("id"));
-    console.log("editid", editid);
-    console.log("editproducts", products);
 
     if (editid) {
       matchedIndexForEdit = products?.findIndex((product) => {
         return product.id == editid;
       });
-      console.log("matchedEdit", matchedIndexForEdit);
 
       setValue("id", products[matchedIndexForEdit]?.id);
       setValue("title", products[matchedIndexForEdit]?.title);
       setValue("image", products[matchedIndexForEdit]?.image);
       setValue("description", products[matchedIndexForEdit]?.description);
-      console.log("category");
       setValue("category", products[matchedIndexForEdit]?.category);
       setValue("price", products[matchedIndexForEdit]?.price);
       setValue("rate", products[matchedIndexForEdit]?.rating.rate);
       setValue("count", products[matchedIndexForEdit]?.rating.count);
     }
-
-    // return () => {
-    //   setEditUser(null);
-    //   seteditid();
-    // };
   }, [products, editid]);
 
-  const handleChange = (e) => {
-    console.log("e", e.target.value);
-    setValue("title", products[matchedIndexForEdit]?.title);
-  };
-
+ 
+  
   const onSubmit = (data) => {
     let tempdata;
     if (!editid) {
-      console.log("data", data);
+      
       let length = products.length;
       let id = length + 1;
-      console.log("len", length);
       tempdata = { ...data, id: id };
     } else {
       tempdata = data;
-      console.log("updatetempd", tempdata);
     }
-    console.log("datadddd", data);
+
     let addedData = {
       id: editid ? editid : tempdata.id,
       title: tempdata.title,
@@ -148,63 +103,41 @@ function AddProduct() {
       },
     };
 
-    // products.unshift(addedData);
-    console.log("added", addedData);
-
-    // console.log("addedddddd", addedData);
-
-    // products.push(data);
-    // console.clear();
-    console.log("editiddddd", editid);
     if (editid) {
-      reset();
-
-      seteditid(0);
-      console.clear();
-      console.log("editid", editid);
       navigate("/");
       dispatch({ type: "updateProduct", value: addedData });
     } else {
       axios
         .post("https://fakestoreapi.com/products", data)
         .then(function (response) {
-          console.log(response);
-          console.log("editidddd", editid);
           navigate("/");
-          // reset();
-          // setValue("category", "");
           dispatch({ type: "addProduct", value: addedData });
         })
         .catch(function (error) {
-          console.log(error);
+          
         });
     }
   };
 
-  console.log("DEBUG formState", formState);
-
-  // console.log("id", editid);
+  const handleCancel = () => {
+    navigate("/");
+  };
+  const handleChange = (val) => {
+    setValue("category", val);
+  };
   return (
     <>
-      {/* {editUser && ( */}
       <Container maxWidth="sm">
         <Box>
-          {console.log("firt", editUser)}
           {!editid ? <h2>Add Product</h2> : <h2>Update Product</h2>}
           <form onSubmit={handleSubmit(onSubmit)}>
             <div>
               <TextField
                 id="outlined-basic"
                 label="Title"
-                // defaultValue=""
-                // defaultValue={editUser?.title}
-                autoFocus
-                // value={editUser?.title}
-                // onChange={handleChange}
                 variant="outlined"
                 className="textfield"
                 fullWidth
-                // name="title"
                 {...register("title")}
                 error={!!errors.title}
               />
@@ -216,14 +149,10 @@ function AddProduct() {
             <div>
               <TextField
                 id="outlined-basic"
-                label="image"
+                label="Image"
                 variant="outlined"
                 className="textfield"
-                // defaultValue={editUser?.image}
-                autoFocus
-                // value={editUser?.image}
                 fullWidth
-                // name="title"
                 {...register("image")}
                 error={!!errors.image}
               />
@@ -233,15 +162,18 @@ function AddProduct() {
             </div>
 
             <div>
-              <CategoryTag
-                editcategory="category"
-                // register={register}
-                register={{ ...register("category") }}
-                errors={errors}
-                // error={!!errors.category}
-                control={control}
-                setValue={setValue}
-              />
+              <select
+                className="form-select categorySelect"
+                aria-label="Default select example"
+                {...register("category")}
+                error={!!errors.category}
+              >
+                <option selected>Category</option>
+                <option value="men's clothing">Men's clothing</option>
+                <option value="jewelery">Jewelery</option>
+                <option value="electronics">Electronics</option>
+                <option value="women's clothing">Women's clothing</option>
+              </select>
             </div>
 
             <div>
@@ -249,11 +181,7 @@ function AddProduct() {
                 id="outlined-basic"
                 label="Description"
                 variant="outlined"
-                autoFocus
-                // defaultValue={editUser?.description}
-                // value={editUser?.description}
                 fullWidth
-                // name="description"
                 {...register("description")}
                 error={!!errors.description}
               />
@@ -266,11 +194,7 @@ function AddProduct() {
                 id="outlined-basic"
                 label="Price"
                 variant="outlined"
-                autoFocus
-                // defaultValue={editUser?.price}
-                // value={editUser?.price}
                 fullWidth
-                // name="price"
                 {...register("price")}
                 error={!!errors.price}
               />
@@ -282,14 +206,10 @@ function AddProduct() {
             <div>
               <TextField
                 id="outlined-basic"
-                label="rate"
+                label="Rate"
                 variant="outlined"
                 type="number"
-                autoFocus
-                // defaultValue={editUser?.rate}
-                // value={editUser?.rate}
                 fullWidth
-                // name="rate"
                 {...register("rate")}
                 error={!!errors.rate}
               />
@@ -306,9 +226,6 @@ function AddProduct() {
                 variant="outlined"
                 name="count"
                 type="number"
-                autoFocus
-                // defaultValue={editUser?.count}
-                // value={editUser?.count}
                 fullWidth
                 {...register("count")}
                 error={!!errors.count}
@@ -321,11 +238,19 @@ function AddProduct() {
               <Button variant="contained" type="submit">
                 {!editid ? "Add Product" : "Update Product"}
               </Button>
+              {
+                <Button
+                  variant="contained"
+                  type="submit"
+                  onClick={handleCancel}
+                >
+                  Cancel
+                </Button>
+              }
             </div>
           </form>
         </Box>
       </Container>
-      {/* )} */}
     </>
   );
 }

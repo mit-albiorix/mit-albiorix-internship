@@ -4,31 +4,30 @@ import Container from "@mui/material/Container";
 
 import ProductCard from "./ProductCard";
 import Button from "@mui/material/Button";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import Spinner from "./Spinner";
 
 function Products() {
-  // const [products, setProducts] = useState();
   const dispatch = useDispatch();
   const products = useSelector((state) => state.products);
+  console.log("product", products);
   const isFetched = useSelector((state) => state.isFetched);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const navigate = useNavigate();
 
   const newProductHandler = () => {
     navigate("addProduct");
   };
-  console.log("prolen", products?.length);
+
   useEffect(() => {
     if (isFetched === false) {
       axios
         .get("https://fakestoreapi.com/products")
         .then((response) => {
-          // setProducts(response.data);
-
           dispatch({ type: "apiData", value: response.data });
-
-          console.log("respone", response.data);
+          setIsLoaded(true);
         })
         .catch((error) => {
           console.log("err", error);
@@ -45,14 +44,11 @@ function Products() {
         </Button>
       </Container>
 
-      <ProductCard />
+      {!isLoaded && products.length === 0 && <Spinner />}
+      {isLoaded && <ProductCard />}
+      {!isLoaded && products.length > 0 && <ProductCard />}
     </>
   );
 }
 
 export default Products;
-
-
-// export const loaderData = async () =>{
-
-// }

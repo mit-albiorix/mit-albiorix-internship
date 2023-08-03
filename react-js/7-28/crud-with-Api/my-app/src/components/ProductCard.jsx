@@ -1,24 +1,20 @@
-import React, { useEffect } from "react";
-// import * as React from "react";
-import { styled } from "@mui/material/styles";
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import CardMedia from "@mui/material/CardMedia";
-import CardContent from "@mui/material/CardContent";
-import CardActions from "@mui/material/CardActions";
-import Collapse from "@mui/material/Collapse";
-import Avatar from "@mui/material/Avatar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import { red } from "@mui/material/colors";
-import CssBaseline from "@mui/material/CssBaseline";
-import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
-// import theme from "@mui/material/theme"
+import React from "react";
+
+import {
+  Card,
+  CardHeader,
+  CardMedia,
+  CardContent,
+  Typography,
+  CssBaseline,
+  Box,
+  Container,
+  Button,
+} from "@mui/material";
 
 import "./../assests/css/ProductCard.css";
 import { useDispatch, useSelector } from "react-redux";
-import { Button } from "@mui/material";
+
 import { createSearchParams, useNavigate } from "react-router-dom";
 
 function ProductCard() {
@@ -27,22 +23,15 @@ function ProductCard() {
   };
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const productsdata = useSelector((state) => state.products);
 
-  console.log("final", productsdata);
+  const productsdata = useSelector((state) => state.products) || [];
+  console.log("pro", productsdata);
 
   const deleteHandler = (id) => {
-    // let matchedIndex = productsdata.findIndex((product) => {
-    //   return product.id === id;
-    // });
-    // console.log("matched", matchedIndex);
-    // navigate('addProduct')
     dispatch({ type: "deleteProduct", value: id });
   };
 
   const editHandler = (id) => {
-    // dispatch({type:"editProduct",value:id})
-    console.log("editid", id);
     navigate({
       pathname: "addProduct",
       search: createSearchParams({
@@ -54,6 +43,9 @@ function ProductCard() {
   return (
     <>
       <CssBaseline />
+      {/* {productsdata === null && (
+        <p style={{ textAlign: "center" }}>Loading...</p>
+      )} */}
 
       <Container maxWidth="sm">
         <Box sx={{ bgcolor: "#cfe8fc", height: ":fullscreen", mt: 10 }}>
@@ -77,9 +69,9 @@ function ProductCard() {
                 </CardContent>
 
                 <CardContent>
-                  <Typography>Price :{product.price}</Typography>
-                  <Typography>Rating :{product.rating?.rate}</Typography>
-                  <Typography>Count : {product.rating?.count}</Typography>
+                  <Typography>Price : {product.price} $</Typography>
+                  <Typography>Rating : {product.rating?.rate}/ 5</Typography>
+                  <Typography>Quantity : {product.rating?.count}</Typography>
                 </CardContent>
 
                 <Button
@@ -108,6 +100,7 @@ function ProductCard() {
           })}
         </Box>
       </Container>
+      {/* )} */}
     </>
   );
 }
