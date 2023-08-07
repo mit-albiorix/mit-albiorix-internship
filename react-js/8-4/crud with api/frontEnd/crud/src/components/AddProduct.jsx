@@ -75,16 +75,18 @@ function AddProduct() {
   useEffect(() => {
     // seteditid(id);
     // console.log("inside eid2", editid);
-    axios
-      .get(`http://localhost:8000/api/v1/products/${editid}`)
-      .then((res) => {
-        console.log("res", res.data.data.product);
-        seteditProduct(res.data.data.product);
-        // let prod = res.data.data;
-      })
-      .catch((error) => {
-        console.log("err", error);
-      });
+    if (editid) {
+      axios
+        .get(`https://dummy-api-un4f.onrender.com/api/v1/products/${editid}`)
+        .then((res) => {
+          console.log("res", res.data.data.product);
+          seteditProduct(res.data.data.product);
+          // let prod = res.data.data;
+        })
+        .catch((error) => {
+          console.log("err", error);
+        });
+    }
   }, []);
 
   // console.log("editprodout", editProduct);
@@ -138,7 +140,10 @@ function AddProduct() {
       // data.image = imageUrl;
 
       axios
-        .put(`http://localhost:8000/api/v1/products/${editid}`, formData)
+        .put(
+          `https://dummy-api-un4f.onrender.com/api/v1/products/${editid}`,
+          formData
+        )
         .then(function (response) {
           navigate("/");
           // dispatch({ type: "addProduct", value: data });
@@ -149,7 +154,7 @@ function AddProduct() {
       // dispatch({ type: "updateProduct", value: data });
     } else {
       axios
-        .post("http://localhost:8000/api/v1/products", formData, {
+        .post("https://dummy-api-un4f.onrender.com/api/v1/products", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },

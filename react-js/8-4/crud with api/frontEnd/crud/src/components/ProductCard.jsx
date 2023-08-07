@@ -33,7 +33,7 @@ function ProductCard() {
   const deleteHandler = (id) => {
     console.log("id", id);
     axios
-      .delete(`http://localhost:8000/api/v1/products/${id}`)
+      .delete(`https://dummy-api-un4f.onrender.com/api/v1/products/${id}`)
       .then((response) => {
         console.log("resdeleet", response);
         dispatch({ type: "deleteProduct" });

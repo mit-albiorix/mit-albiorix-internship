@@ -40,6 +40,8 @@ const crudReducer = (state = initialState, action) => {
       products: [...temp],
     };
   }
+
+ 
   return state;
 };
 const store = createStore(crudReducer);
