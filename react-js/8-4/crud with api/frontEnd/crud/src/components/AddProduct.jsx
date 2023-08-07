@@ -47,6 +47,7 @@ function AddProduct() {
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
+    console.log("f", file);
     setImage(file);
     // console.log("fi", file);
     const reader = new FileReader();
@@ -61,7 +62,7 @@ function AddProduct() {
       setImageUrl(reader.result);
     };
 
-    console.log("img", imageUrl);
+    console.log("imgup", imageUrl);
 
     reader.readAsDataURL(file);
   };
@@ -90,10 +91,27 @@ function AddProduct() {
   useEffect(() => {
     if (editProduct !== null) {
       console.log("editprod", editProduct);
+      console.log("editimg", editProduct?.image);
 
       setValue("id", editProduct?._id);
       setValue("title", editProduct?.title);
-      setValue("image", editProduct?.image);
+      // setValue("image", editProduct?.image);
+      setImage(editProduct?.image);
+      setImageUrl(editProduct?.image);
+      // const reader = new FileReader();
+
+      // reader.onloadend = () => {
+      //   console.log("red123", reader.result);
+
+      //   console.log("red1234", reader.result.data);
+
+      //   setImageUrl(reader.result);
+      // };
+
+      // console.log("img123", imageUrl);
+
+      // reader.readAsDataURL(imageUrl);
+
       setValue("description", editProduct?.description);
       console.log("cate", editProduct.category);
       setValue("category", editProduct?.category);
@@ -105,6 +123,8 @@ function AddProduct() {
 
   const onSubmit = (data) => {
     const formData = new FormData();
+    console.log("image at update", image);
+
     formData.append("image", image);
     formData.append("title", data.title);
     formData.append("description", data.description);
@@ -115,9 +135,10 @@ function AddProduct() {
     // console.log("Data", data);
 
     if (editid) {
-      navigate("/");
+      // data.image = imageUrl;
+
       axios
-        .put(`http://localhost:8000/api/v1/products/${editid}`, data)
+        .put(`http://localhost:8000/api/v1/products/${editid}`, formData)
         .then(function (response) {
           navigate("/");
           // dispatch({ type: "addProduct", value: data });
@@ -245,9 +266,11 @@ function AddProduct() {
                   </Button>
                   <input
                     id="upload-image"
+                    // name="image"
                     hidden
                     accept="image/*"
                     type="file"
+                    // value={editProduct?.image}
                     {...register("image")}
                     error={!!errors.image}
                     onChange={handleFileUpload}
