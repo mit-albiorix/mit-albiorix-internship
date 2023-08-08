@@ -49,7 +49,11 @@ function ProductCard() {
         dispatch({ type: "deleteProduct" });
       })
       .catch((error) => {
-        console.log("delete", error);
+        setOpen(true);
+          setMessage({
+            msg: error.message,
+            msgType: "error",
+          });
       });
   };
 

@@ -9,6 +9,8 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import "../assests/css/AddProduct.css";
 import Messages from "./Messages";
+import CancelIcon from "@mui/icons-material/Cancel";
+// import Error from "./Error";
 
 const schema = yup
   .object({
@@ -36,6 +38,8 @@ function AddProduct() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [errorImgType, setErrorImgType] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
   const [imgName, setImgName] = useState(null);
   const [image, setImage] = useState();
@@ -43,13 +47,9 @@ function AddProduct() {
   const [message, setMessage] = useState({
     msg: "",
     msgType: "",
-    // msgPosition:{
-    //   { vertical: 'top', horizontal: 'right' }
-    //    vertical : "top",
-    //    horizontal : ""
-    // }
   });
-  const [msgPosition, setMsgPosition] = useState();
+  const extenstions = ["jpg", "jpeg", "png"];
+
   const { register, handleSubmit, reset, formState, getValues, setValue } =
     useForm({
       resolver: yupResolver(schema),
@@ -59,23 +59,27 @@ function AddProduct() {
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
     console.log("f", file);
-    setImage(file);
-    // console.log("fi", file);
-    const reader = new FileReader();
-    // console.log("red", reader.result);
-    // formData.append("file", file);
 
-    reader.onloadend = () => {
-      console.log("red", reader.result);
+    const isimage = extenstions.findIndex((extenstion) => {
+      return file?.type.includes(extenstion);
+    });
+    console.log("isimage", isimage);
+    if (isimage !== -1) {
+      setImage(file);
 
-      console.log("red", reader.result.data);
+      const reader = new FileReader();
 
-      setImageUrl(reader.result);
-    };
+      reader.onloadend = () => {
+        setImageUrl(reader.result);
+      };
 
-    console.log("imgup", imageUrl);
-
-    reader.readAsDataURL(file);
+      console.log("imgup", imageUrl);
+      reader.readAsDataURL(file);
+      console.log("img", image);
+      setErrorImgType(null)
+    } else {
+      setErrorImgType("only can upload JPG, JPEG and PNG files");
+    }
   };
 
   // const [editid, seteditid] = useState(null);
@@ -96,6 +100,11 @@ function AddProduct() {
         })
         .catch((error) => {
           console.log("err", error);
+          setOpen(true);
+          setMessage({
+            msg: error.message,
+            msgType: "error",
+          });
         });
     }
   }, []);
@@ -110,20 +119,8 @@ function AddProduct() {
       setValue("title", editProduct?.title);
       // setValue("image", editProduct?.image);
       setImage(editProduct?.image);
+
       setImageUrl(editProduct?.image);
-      // const reader = new FileReader();
-
-      // reader.onloadend = () => {
-      //   console.log("red123", reader.result);
-
-      //   console.log("red1234", reader.result.data);
-
-      //   setImageUrl(reader.result);
-      // };
-
-      // console.log("img123", imageUrl);
-
-      // reader.readAsDataURL(imageUrl);
 
       setValue("description", editProduct?.description);
       console.log("cate", editProduct.category);
@@ -166,6 +163,11 @@ function AddProduct() {
         })
         .catch(function (error) {
           console.log("adderr", error);
+          setOpen(true);
+          setMessage({
+            msg: error.message,
+            msgType: "error",
+          });
         });
       // dispatch({ type: "updateProduct", value: data });
     } else {
@@ -190,6 +192,11 @@ function AddProduct() {
         })
         .catch(function (error) {
           console.log("adderr", error);
+          setOpen(true);
+          setMessage({
+            msg: error.message,
+            msgType: "error",
+          });
         });
     }
   };
@@ -200,8 +207,10 @@ function AddProduct() {
     // }
 
     setOpen(false);
-
-    navigate("/");
+    console.log("errormsg", message.msgType);
+    if (!message.msgType === "error") {
+      navigate("/");
+    }
   };
 
   const handleCancel = () => {
@@ -209,6 +218,12 @@ function AddProduct() {
   };
   const handleChange = (val) => {
     setValue("category", val);
+  };
+
+  const handleCancelImage = () => {
+    console.log("icon");
+    setImage("");
+    setImageUrl("");
   };
   return (
     <>
@@ -320,11 +335,21 @@ function AddProduct() {
                 {/* {imgName && console.log("imggg", imageUrl.data)} */}
 
                 {/* {image?.name && <p>{image.name}</p>} */}
-                {!image && <p>No Image Choosen</p>}
-                {image && <img src={imageUrl} width={"100px"}></img>}
+                {/* {!image && <p>No Image Choosen</p>}
+                {image && <img src={imageUrl} width={"100px"}></img> }
+                {image && <CancelIcon/>}  */}
+
+                {!image ? (
+                  <p>No Image Choosen</p>
+                ) : (
+                  <div>
+                    <img src={imageUrl} width={"100px"}></img>
+                    <CancelIcon onClick={handleCancelImage} />
+                  </div>
+                )}
               </Stack>
               <p style={{ color: "red" }}>
-                {errors.image && errors.image?.message}
+                {errorImgType !== null && errorImgType}
               </p>
             </div>
 

@@ -41,7 +41,7 @@ function Messages(props) {
 
   return (
     <>
-      {console.log("open", open)}
+      {console.log("type", message.msgType)}
       <Stack spacing={2} sx={{ width: "100%" }}>
         {/* <Button variant="outlined">Open success snackbar</Button> */}
         <Snackbar
@@ -52,7 +52,7 @@ function Messages(props) {
         >
           <Alert
             onClose={handleClose}
-            severity={message?.messageTpe}
+            severity={message?.msgType}
             sx={{ width: "100%" }}
           >
             {message?.msg}

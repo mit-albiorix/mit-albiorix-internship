@@ -21,6 +21,11 @@ function Products() {
   const isDeleted = useSelector((state) => state.isDeleted);
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
+  const [open, setOpen] = React.useState(false);
+  const [message, setMessage] = useState({
+    msg: "",
+    msgType: "",
+  });
   const size = 4;
   // const []
   console.log("deleted", isDeleted);
@@ -53,7 +58,11 @@ function Products() {
         setIsLoaded(true);
       })
       .catch((error) => {
-        console.log("err", error);
+        setOpen(true);
+        setMessage({
+          msg: error.message,
+          msgType: "error",
+        });
       });
   }, [isDeleted, page]);
   console.log("totlpage", totalPage);

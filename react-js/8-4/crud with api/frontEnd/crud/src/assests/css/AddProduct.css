@@ -35,6 +35,11 @@
   font: inherit;
 }
 
-.css-1sos3zc-MuiStack-root{
+.css-1sos3zc-MuiStack-root {
   margin-bottom: 35px !important;
+}
+
+.css-i4bv87-MuiSvgIcon-root{
+  position:absolute;
+  /* left: 470px; */
 }
