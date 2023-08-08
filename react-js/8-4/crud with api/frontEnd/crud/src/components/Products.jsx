@@ -21,7 +21,7 @@ function Products() {
   const isDeleted = useSelector((state) => state.isDeleted);
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
-  const size = 2;
+  const size = 4;
   // const []
   console.log("deleted", isDeleted);
   const navigate = useNavigate();
@@ -36,7 +36,9 @@ function Products() {
   // console.log("paggge", page);
   useEffect(() => {
     axios
-      .get(`https://dummy-api-un4f.onrender.com/api/v1/products?page=${page}&size=${size}`)
+      .get(
+        `https://dummy-api-un4f.onrender.com/api/v1/products?page=${page}&size=${size}`
+      )
       .then((response) => {
         console.log("resforpage", response.data.data);
         const products = response.data.data.products;
@@ -67,8 +69,15 @@ function Products() {
 
       {!isLoaded && products?.length === 0 && <Spinner />}
       {isLoaded && <ProductCard />}
+
       {!isLoaded && products?.length > 0 && <ProductCard />}
-      <Pagination pageNumberFunc={pageNumberFunc} totalPage={totalPage} />
+      {isLoaded && (
+        <Pagination pageNumberFunc={pageNumberFunc} totalPage={totalPage} />
+      )}
+
+      {!isLoaded && products?.length > 0 && (
+        <Pagination pageNumberFunc={pageNumberFunc} totalPage={totalPage} />
+      )}
     </>
   );
 }

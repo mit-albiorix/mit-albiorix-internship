@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import {
   Card,
@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { createSearchParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Messages from "./Messages";
 
 function ProductCard() {
   const theme = {
@@ -24,7 +25,11 @@ function ProductCard() {
   };
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState({
+    msg: "",
+    msgType: "",
+  });
   const productsdata = useSelector((state) => state.products) || [];
   const isDeleted = useSelector((state) => state.isDeleted);
 
@@ -36,6 +41,11 @@ function ProductCard() {
       .delete(`https://dummy-api-un4f.onrender.com/api/v1/products/${id}`)
       .then((response) => {
         console.log("resdeleet", response);
+        setOpen(true);
+        setMessage({
+          msg: "deleted successfully!",
+          msgType: "success",
+        });
         dispatch({ type: "deleteProduct" });
       })
       .catch((error) => {
@@ -43,6 +53,15 @@ function ProductCard() {
       });
   };
 
+  const handleMsgClose = () => {
+    // if (reason === "clickaway") {
+    //   return;
+    // }
+
+    setOpen(false);
+
+    navigate("/");
+  };
   const editHandler = (id) => {
     navigate({
       pathname: "addProduct",
@@ -55,6 +74,7 @@ function ProductCard() {
 
   return (
     <>
+      <Messages open={open} handleMsgClose={handleMsgClose} message={message} />
       <CssBaseline />
 
       <Container maxWidth="sm">

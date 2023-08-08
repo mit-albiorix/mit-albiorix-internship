@@ -8,6 +8,7 @@ import * as yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import "../assests/css/AddProduct.css";
+import Messages from "./Messages";
 
 const schema = yup
   .object({
@@ -38,7 +39,17 @@ function AddProduct() {
   const [imageUrl, setImageUrl] = useState(null);
   const [imgName, setImgName] = useState(null);
   const [image, setImage] = useState();
-
+  const [open, setOpen] = React.useState(false);
+  const [message, setMessage] = useState({
+    msg: "",
+    msgType: "",
+    // msgPosition:{
+    //   { vertical: 'top', horizontal: 'right' }
+    //    vertical : "top",
+    //    horizontal : ""
+    // }
+  });
+  const [msgPosition, setMsgPosition] = useState();
   const { register, handleSubmit, reset, formState, getValues, setValue } =
     useForm({
       resolver: yupResolver(schema),
@@ -145,7 +156,12 @@ function AddProduct() {
           formData
         )
         .then(function (response) {
-          navigate("/");
+          setOpen(true);
+          setMessage({
+            msg: "successfully updated!",
+            msgType: "success",
+          });
+
           // dispatch({ type: "addProduct", value: data });
         })
         .catch(function (error) {
@@ -160,13 +176,32 @@ function AddProduct() {
           },
         })
         .then(function (response) {
-          navigate("/");
+          // <Messages message="successfully added!" />;
+          console.log("open before", open);
+          // alert("added");
+          setOpen(true);
+          setMessage({
+            msg: "successfully added!",
+            msgType: "success",
+          });
+          console.log("open after", open);
+
           // dispatch({ type: "addProduct", value: data });
         })
         .catch(function (error) {
           console.log("adderr", error);
         });
     }
+  };
+
+  const handleMsgClose = () => {
+    // if (reason === "clickaway") {
+    //   return;
+    // }
+
+    setOpen(false);
+
+    navigate("/");
   };
 
   const handleCancel = () => {
@@ -310,6 +345,8 @@ function AddProduct() {
           </form>
         </Box>
       </Container>
+      {console.log("send", open)}
+      <Messages open={open} handleMsgClose={handleMsgClose} message={message} />
     </>
   );
 }
