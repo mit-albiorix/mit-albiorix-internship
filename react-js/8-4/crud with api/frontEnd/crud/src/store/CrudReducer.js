@@ -3,9 +3,11 @@ import { createStore } from "redux";
 let initialState = { products: [], isFetched: false, isDeleted: false };
 const crudReducer = (state = initialState, action) => {
   if (action.type === "apiData") {
+    let temp = [...state.products, ...action.value];
+    console.log('DEBUG ', temp, state, action)
     return {
       ...state,
-      products: action.value,
+      products: [...temp],
     };
   }
 
