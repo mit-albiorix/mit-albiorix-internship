@@ -76,7 +76,7 @@ function AddProduct() {
       console.log("imgup", imageUrl);
       reader.readAsDataURL(file);
       console.log("img", image);
-      setErrorImgType(null)
+      setErrorImgType(null);
     } else {
       setErrorImgType("only can upload JPG, JPEG and PNG files");
     }
@@ -207,8 +207,9 @@ function AddProduct() {
     // }
 
     setOpen(false);
+    navigate("/");
     console.log("errormsg", message.msgType);
-    if (!message.msgType === "error") {
+    if (!message.msgType == "error") {
       navigate("/");
     }
   };
