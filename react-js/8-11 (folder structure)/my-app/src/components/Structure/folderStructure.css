@@ -1,0 +1,41 @@
+.verticleLine {
+  border-left: 3px solid black;
+  position: relative;
+  height: 50px;
+  margin-left: 15px;
+}
+hr {
+  width: 32px;
+
+  position: absolute;
+  top: 32px;
+
+  border: 1px solid black;
+}
+
+.folderImage {
+  width: 15px;
+  height: 18px;
+  position: absolute;
+  top: 32px;
+  left: 42px;
+  /* right: 10px; */
+}
+
+.folderName {
+  position: absolute;
+  top: 28px;
+  left: 64px;
+}
+
+/* .plusButton {
+  position: absolute;
+  top: 30px;
+  left: 100px;
+} */
+
+/* .minusButton {
+  position: absolute;
+  top: 30px;
+  left: 140px;
+} */
