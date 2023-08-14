@@ -1,5 +1,5 @@
 import React from "react";
-import "../Structure/folderStructure.css";
+import "../Structure/folderStructure.scss";
 
 function FileStructure() {
   return (

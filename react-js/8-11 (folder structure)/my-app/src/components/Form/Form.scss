@@ -1,6 +1,8 @@
+$border_color: black;
+
 .folderContainer {
   margin: 15px;
-  border: 2px solid black;
+  border: 2px solid $border_color;
   width: 320px;
   height: 40px;
 }
@@ -23,11 +25,11 @@
 }
 .rightMark {
   /* height: 10px; */
-  border: 2px solid black;
+  border: 2px solid $border_color;
   margin-left: 4px;
   margin-right: 4px;
 }
 
 .cancelMark {
-  border: 2px solid black;
+  border: 2px solid $border_color;
 }

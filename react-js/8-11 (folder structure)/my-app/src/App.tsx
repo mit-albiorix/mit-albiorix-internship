@@ -5,12 +5,18 @@ import Form from "./components/Form/Form";
 import FolderStructure from "./components/Structure/folderStructure";
 import FileStructure from "./components/Structure/fileStructure";
 import Folders from "./components/ShowFolders/Folders";
+import { useDispatch, useSelector } from "react-redux";
 
 function App() {
-  const [isopenForm, setisopenForm] = useState<boolean>(false);
-
+  // const [isopenForm, setisopenForm] = useState<boolean>(false);
+  // const [isRootClicked, setisRootClicked] = useState(false);
+  const dispatch = useDispatch();
+  const isFormOpen = useSelector((state: any) => state.isFormOpen);
   const handleClickForAddFolder = () => {
-    setisopenForm(true);
+    // setisopenForm(true);
+    dispatch({ type: "setisFormOpen" });
+
+    dispatch({ type: "isRootClicked", value: true });
   };
 
   return (
@@ -32,7 +38,7 @@ function App() {
         Add folder to root
       </button>
       <Folders />
-      {isopenForm && <Form setisopenForm={setisopenForm} />}
+      {isFormOpen && <Form />}
 
       {/* <FolderStructure folders={folders} /> */}
       {/* <FileStructure /> */}

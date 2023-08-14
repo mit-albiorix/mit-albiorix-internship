@@ -1,0 +1,57 @@
+$border_color: black;
+$ele_position: absolute;
+$border_radius: 25px;
+
+.verticleLine {
+  border-left: 3px solid $border_color;
+  position: relative;
+  height: 50px;
+  // margin-left: 15px;
+  right: 28px;
+  bottom: 16px;
+}
+
+.horizontalEle {
+  position: $ele_position;
+  top: 32px;
+
+  display: flex;
+  flex-direction: row;
+}
+hr {
+  width: 32px;
+  height: 0px;
+  border: 1px solid $border_color;
+}
+
+.folderImage {
+  width: 15px;
+  height: 18px;
+  // position: $ele_position;
+  // top: 32px;
+  // left: 42px;
+}
+
+// .folderName {
+//   position: $ele_position;
+//   top: 28px;
+//   left: 64px;
+// }
+
+// .css-ptiqhd-MuiSvgIcon-root
+.rightButton{
+  // position: absolute;
+  // top: 3px;
+  // left: 32px !important;
+  border: 2px solid $border_color;
+  border-radius: $border_radius;
+
+}
+
+.cancelButton{
+  // position: absolute;
+  // top: 3px; left: 58px;
+  border: 2px solid $border_color;
+  border-radius: $border_radius
+
+}
