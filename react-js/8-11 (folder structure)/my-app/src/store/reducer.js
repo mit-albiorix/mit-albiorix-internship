@@ -1,3 +1,5 @@
+// import { match } from "assert";
+// import { match } from "assert";
 import { createStore } from "redux";
 
 const initialState = {
@@ -5,48 +7,56 @@ const initialState = {
   isFolderClicked: false,
   isFileClicked: false,
   clickedFolder: "",
+  clickedFolderId: null,
   isRootClicked: false,
   isFormOpen: false,
   isClickedRightForNested: false,
+  isClickedRightForNestedWithId: null,
 };
 const folderReducer = (state = initialState, action) => {
   if (action.type === "addfolders") {
-    let temp;
     console.log("clikedinreducer", state.clickedFolder);
+    let temp = [...state.folders];
+    let allparentsarray = temp?.filter((ele) => ele.parent_id === null);
+    console.log("parent", allparentsarray);
+
     if (state.isRootClicked) {
       //   temp = [...state.products];
       console.log("first");
       console.log("obj", action.value);
       temp = [...state.folders, action.value];
     } else {
-      console.log("debug", state.folders);
-      console.log("debug clicked", state.clickedFolder);
-      console.log("debug value", action.value);
+      console.log("matchedparent 1");
 
-      let matchedFolderForSubRoute = state.folders.findIndex((ele) => {
-        if ((ele.id === state.clickedFolder.id) === -1) {
-          console.log("inside -1", ele.child);
-          let matched = ele.child.findIndex((ele) => {
-            return ele.id === state.clickedFolder.id;
-          });
-          console.log("matchedinside",matched);
-          return matched;
-        } else {
-          return ele.id === state.clickedFolder.id;
+      // let matchedparent = findSubroute(allparentsarray);
+      function findSubroute(foldersArray) {
+        console.log("matchedparent 2", foldersArray);
+
+        for (let i = 0; i < foldersArray?.length; i++) {
+          console.log("matchedparent ele", foldersArray[i]);
+          console.log("helloji");
+          console.log(
+            "matchedparent 4",
+            foldersArray[i].id,
+            state.clickedFolderId
+          );
+          if (foldersArray[i].id === state.clickedFolderId) {
+            console.log("matchedparent parent", foldersArray[i]);
+            foldersArray[i].child.push(action.value);
+            return foldersArray[i];
+          } else {
+            findSubroute(foldersArray[i].child);
+          }
         }
-      });
-      console.log("matchedlast1", matchedFolderForSubRoute);
-      // if (matchedFolderForSubRoute === -1) {
-      //   matchedFolderForSubRoute = state.folders.child.findIndex((ele) => {
-      //     return ele.id === state.clickedFolder.id;
-      //   });
-      // }
-      // console.log("matchedlast2", matchedFolderForSubRoute);
-
-      temp = [...state.folders];
-      temp[matchedFolderForSubRoute]?.child?.push(action.value);
-      console.log("tempp", temp);
+      }
+      console.log("matchedparent 3", allparentsarray);
+      let matchedparent = findSubroute(allparentsarray);
+      console.log("matchedparent", matchedparent);
     }
+
+    // temp = [...state.folders];
+    console.log("parent temp", temp);
+
     return {
       ...state,
       folders: [...temp],
@@ -69,7 +79,8 @@ const folderReducer = (state = initialState, action) => {
     console.log("debug clicked", action.value);
     return {
       ...state,
-      clickedFolder: action.value,
+      clickedFolder: action.value.name,
+      clickedFolderId: action.value.id,
     };
   }
 
@@ -94,9 +105,12 @@ const folderReducer = (state = initialState, action) => {
   }
 
   if (action.type === "setIsClickedRightInNested") {
+    // let tempfoldersdata = [...state.folders]
+    // tempfoldersdata = [...tempfoldersdata,isClickedRightForNested]
     return {
       ...state,
-      isClickedRightForNested: action.value,
+      isClickedRightForNested: action.value.isClicked,
+      isClickedRightForNestedWithId: action.value.id,
     };
   }
   return state;

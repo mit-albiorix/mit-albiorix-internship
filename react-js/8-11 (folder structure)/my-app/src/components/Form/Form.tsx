@@ -12,17 +12,26 @@ function Form(props: any) {
   const [inputName, setInputName] = useState<any>({
     fname: "",
     id: null,
+    parent_id: null,
+    // isClickedRightForNested: false,
     child: [],
   });
   const isFileClicked = useSelector((state: any) => state.isFileClicked);
   const isFolderClicked = useSelector((state: any) => state.isFolderClicked);
+  const clickedFolderId = useSelector((state: any) => state.clickedFolderId);
+  console.log("parent", clickedFolderId);
+
   const unique_id = uuid();
   const dispatch = useDispatch();
   const handleChange = (e: any) => {
+    console.log("edebug", e);
+
     setInputName((prev: any) => ({
       ...inputName,
       fname: e.target.value,
       id: unique_id,
+      parent_id: clickedFolderId,
+      isFile: isFileClicked,
     }));
   };
 
@@ -36,7 +45,12 @@ function Form(props: any) {
     dispatch({ type: "setisFormClose" });
     dispatch({ type: "fileClicked", value: false });
     dispatch({ type: "folderClicked", value: false });
-    dispatch({ type: "setIsClickedRightInNested", value: false });
+    dispatch({
+      type: "setIsClickedRightInNested",
+      value: { isClicked: false, id: null },
+    });
+    // dispatch({ type: "isClickedRightForNestedWithI", value: false });
+
     dispatch({ type: "isRootClicked", value: false });
     setInputName("");
   };
@@ -50,33 +64,24 @@ function Form(props: any) {
     <>
       <div className="folderContainer">
         <form className="folderForm">
-          {isFileClicked ? (
-            <img
-              src="https://folder-structure-9dbd4.web.app/assets/file-regular.svg"
-              alt=""
-              className="folderImg"
-            />
-          ) : (
-            <img
-              src="https://folder-structure-9dbd4.web.app/assets/folder-open-regular.svg"
-              alt=""
-              className="folderImg"
-            />
-          )}
-
+          (
+          <img
+            src="https://folder-structure-9dbd4.web.app/assets/folder-open-regular.svg"
+            alt=""
+            className="folderImg"
+          />
+          )<> {console.log("inside forrm")}</>
           <input
             type="text"
             className="inputForFolder"
             value={inputName.fname}
             onChange={handleChange}
           />
-
           <CheckOutlinedIcon
             fontSize="small"
             className="rightMark"
             onClick={handleRight}
           />
-
           <ClearOutlinedIcon
             fontSize="small"
             className="cancelMark"

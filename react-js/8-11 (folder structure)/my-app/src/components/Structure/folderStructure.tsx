@@ -10,13 +10,26 @@ function FolderStructure(props: any) {
   const [isFocused, setisFocused] = useState(false);
 
   // const [isClickedRight, setIsClickedRight] = useState(false);
+
+  const dispatch = useDispatch();
+  const isFileClicked = useSelector((state: any) => state.isFileClicked);
+  const isFolderClicked = useSelector((state: any) => state.isFolderClicked);
+  const { folder, folderId } = props;
   const isClickedRight = useSelector(
     (state: any) => state.isClickedRightForNested
   );
-  const dispatch = useDispatch();
-  const { folder, folderId } = props;
 
-  console.log("folder", folder);
+  const isClickedRightWithId = useSelector(
+    (state: any) => state.isClickedRightForNestedWithId
+  );
+
+  // const foldersdata = useSelector((state: any) => state.folders);
+  // console.log("nesteddebug", foldersdata);
+  // console.log("nesteddebug", isClickedRightWithId);
+  const matchedFolder = folderId === isClickedRightWithId;
+  console.log("nesteddebug", matchedFolder);
+
+  console.log("folderid", folderId);
 
   const clickedFolder = useSelector((state: any) => state.clickedFolder);
   console.log("clicked", clickedFolder);
@@ -28,7 +41,12 @@ function FolderStructure(props: any) {
       name: folder,
       id: folderId,
     };
-    dispatch({ type: "setIsClickedRightInNested", value: true });
+
+    let obj = {
+      isClicked: true,
+      id: folderId,
+    };
+    dispatch({ type: "setIsClickedRightInNested", value: obj });
     dispatch({ type: "clickedFolderName", value: tempClickedObj });
   };
 
@@ -42,7 +60,8 @@ function FolderStructure(props: any) {
     <>
       <div className="verticleLine">
         <div className="horizontalEle">
-          <hr />{" "}
+          <hr />
+
           <img
             src="https://folder-structure-9dbd4.web.app/assets/folder-open-regular.svg"
             alt=""
@@ -74,7 +93,8 @@ function FolderStructure(props: any) {
         </div>
       </div>
 
-      {isClickedRight && <NestedFolderStructure />}
+      {console.log("idofright", isClickedRightWithId)}
+      {isClickedRight && matchedFolder && <NestedFolderStructure />}
 
       {/* <hr /> */}
     </>
