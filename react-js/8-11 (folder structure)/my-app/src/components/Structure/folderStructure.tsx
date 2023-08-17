@@ -14,7 +14,8 @@ function FolderStructure(props: any) {
   const dispatch = useDispatch();
   const isFileClicked = useSelector((state: any) => state.isFileClicked);
   const isFolderClicked = useSelector((state: any) => state.isFolderClicked);
-  const { folder, folderId } = props;
+  const { folder, folderId, isFile } = props;
+
   const isClickedRight = useSelector(
     (state: any) => state.isClickedRightForNested
   );
@@ -23,20 +24,13 @@ function FolderStructure(props: any) {
     (state: any) => state.isClickedRightForNestedWithId
   );
 
-  // const foldersdata = useSelector((state: any) => state.folders);
-  // console.log("nesteddebug", foldersdata);
-  // console.log("nesteddebug", isClickedRightWithId);
+ 
   const matchedFolder = folderId === isClickedRightWithId;
-  console.log("nesteddebug", matchedFolder);
 
-  console.log("folderid", folderId);
 
   const clickedFolder = useSelector((state: any) => state.clickedFolder);
-  console.log("clicked", clickedFolder);
 
   const checkClickHandler = (folder: any) => {
-    // setIsClickedRight(true);
-    console.log("clickedfoldername", folder);
     let tempClickedObj = {
       name: folder,
       id: folderId,
@@ -51,10 +45,15 @@ function FolderStructure(props: any) {
   };
 
   const cancelClickHandler = () => {
-    dispatch({ type: "setIsClickedRightInNested", value: false });
+
+    let tempRemove = {
+      name: folder,
+      id: folderId,
+    };
+
+    dispatch({ type: "setRemoveFolder", value: tempRemove });
   };
 
-  console.log("folder", folder);
 
   return (
     <>
@@ -62,18 +61,35 @@ function FolderStructure(props: any) {
         <div className="horizontalEle">
           <hr />
 
-          <img
-            src="https://folder-structure-9dbd4.web.app/assets/folder-open-regular.svg"
-            alt=""
-            className="folderImage"
-          />
+          {isFile ? (
+            <img
+              src="https://folder-structure-9dbd4.web.app/assets/file-regular.svg"
+              alt=""
+              className="folderImage"
+            />
+          ) : (
+            <img
+              src="https://folder-structure-9dbd4.web.app/assets/folder-open-regular.svg"
+              alt=""
+              className="folderImage"
+            />
+          )}
+
           <span
             className="folderName"
             onMouseEnter={() => setisFocused(true)}
             onMouseLeave={() => setisFocused(false)}
           >
             {folder}
-            {isFocused && (
+            {isFocused && isFile && (
+              <RemoveOutlinedIcon
+                fontSize="small"
+                className="cancelButton"
+                onClick={cancelClickHandler}
+              />
+            )}
+
+            {isFocused && !isFile && (
               <>
                 <AddOutlinedIcon
                   fontSize="small"
@@ -93,7 +109,6 @@ function FolderStructure(props: any) {
         </div>
       </div>
 
-      {console.log("idofright", isClickedRightWithId)}
       {isClickedRight && matchedFolder && <NestedFolderStructure />}
 
       {/* <hr /> */}

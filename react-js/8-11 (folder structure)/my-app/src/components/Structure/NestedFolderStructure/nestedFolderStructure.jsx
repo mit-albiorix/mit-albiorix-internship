@@ -23,7 +23,6 @@ function NestedFolderStructure() {
     dispatch({ type: "folderClicked", value: true });
   };
 
-  console.log("fileclicked", isFileClicked, isFolderClicked);
   return (
     <div className="verticleLineForNested">
       <div className="horizontalEleForNested">

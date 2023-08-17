@@ -19,13 +19,10 @@ function Form(props: any) {
   const isFileClicked = useSelector((state: any) => state.isFileClicked);
   const isFolderClicked = useSelector((state: any) => state.isFolderClicked);
   const clickedFolderId = useSelector((state: any) => state.clickedFolderId);
-  console.log("parent", clickedFolderId);
 
   const unique_id = uuid();
   const dispatch = useDispatch();
   const handleChange = (e: any) => {
-    console.log("edebug", e);
-
     setInputName((prev: any) => ({
       ...inputName,
       fname: e.target.value,
@@ -36,13 +33,10 @@ function Form(props: any) {
   };
 
   const handleRight = () => {
-    console.log("right");
-
     // setFolders([...folders, inputName]);
     dispatch({ type: "addfolders", value: inputName });
-    console.log("props", props);
 
-    dispatch({ type: "setisFormClose" });
+    dispatch({ type: "setisFormOpen", value: false });
     dispatch({ type: "fileClicked", value: false });
     dispatch({ type: "folderClicked", value: false });
     dispatch({
@@ -56,21 +50,36 @@ function Form(props: any) {
   };
 
   const handleCancel = () => {
-    console.log("cancel");
-    dispatch({ type: "setisFormClose" });
+    dispatch({ type: "setisFormOpen", value: false });
+    dispatch({ type: "fileClicked", value: false });
+    dispatch({ type: "folderClicked", value: false });
+    dispatch({
+      type: "setIsClickedRightInNested",
+      value: { isClicked: false, id: null },
+    });
+    // setInputName("");
   };
 
   return (
     <>
+      {}
       <div className="folderContainer">
         <form className="folderForm">
-          (
-          <img
-            src="https://folder-structure-9dbd4.web.app/assets/folder-open-regular.svg"
-            alt=""
-            className="folderImg"
-          />
-          )<> {console.log("inside forrm")}</>
+          {isFileClicked && (
+            <img
+              src="https://folder-structure-9dbd4.web.app/assets/file-regular.svg"
+              alt=""
+              className="folderImage"
+            />
+          )}
+          {isFolderClicked && (
+            <img
+              src="https://folder-structure-9dbd4.web.app/assets/folder-open-regular.svg"
+              alt=""
+              className="folderImg"
+            />
+          )}
+
           <input
             type="text"
             className="inputForFolder"

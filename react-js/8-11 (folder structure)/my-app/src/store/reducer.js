@@ -15,33 +15,15 @@ const initialState = {
 };
 const folderReducer = (state = initialState, action) => {
   if (action.type === "addfolders") {
-    console.log("clikedinreducer", state.clickedFolder);
     let temp = [...state.folders];
-    let allparentsarray = temp?.filter((ele) => ele.parent_id === null);
-    console.log("parent", allparentsarray);
 
     if (state.isRootClicked) {
-      //   temp = [...state.products];
-      console.log("first");
-      console.log("obj", action.value);
       temp = [...state.folders, action.value];
     } else {
-      console.log("matchedparent 1");
-
       // let matchedparent = findSubroute(allparentsarray);
       function findSubroute(foldersArray) {
-        console.log("matchedparent 2", foldersArray);
-
         for (let i = 0; i < foldersArray?.length; i++) {
-          console.log("matchedparent ele", foldersArray[i]);
-          console.log("helloji");
-          console.log(
-            "matchedparent 4",
-            foldersArray[i].id,
-            state.clickedFolderId
-          );
           if (foldersArray[i].id === state.clickedFolderId) {
-            console.log("matchedparent parent", foldersArray[i]);
             foldersArray[i].child.push(action.value);
             return foldersArray[i];
           } else {
@@ -49,17 +31,37 @@ const folderReducer = (state = initialState, action) => {
           }
         }
       }
-      console.log("matchedparent 3", allparentsarray);
-      let matchedparent = findSubroute(allparentsarray);
-      console.log("matchedparent", matchedparent);
+
+      let matchedparent = findSubroute(temp);
     }
 
-    // temp = [...state.folders];
-    console.log("parent temp", temp);
+    
 
     return {
       ...state,
       folders: [...temp],
+    };
+  }
+  if (action.type === "setRemoveFolder") {
+    let temp = [...state.folders];
+
+    function findSubroute(foldersArray) {
+      for (let i = 0; i < foldersArray?.length; i++) {
+        if (foldersArray[i].id === action.value.id) {
+          foldersArray.splice(i, 1);
+
+          return temp;
+        } else {
+          findSubroute(foldersArray[i].child);
+        }
+      }
+    }
+
+    let updatedFolders = findSubroute(temp);
+
+    return {
+      ...state,
+      folders: temp,
     };
   }
   if (action.type === "fileClicked") {
@@ -76,7 +78,6 @@ const folderReducer = (state = initialState, action) => {
   }
 
   if (action.type === "clickedFolderName") {
-    console.log("debug clicked", action.value);
     return {
       ...state,
       clickedFolder: action.value.name,
@@ -91,17 +92,12 @@ const folderReducer = (state = initialState, action) => {
     };
   }
   if (action.type === "setisFormOpen") {
-    return {
+    let temp = {
       ...state,
-      isFormOpen: true,
+      isFormOpen: action.value,
     };
-  }
 
-  if (action.type === "setisFormClose") {
-    return {
-      ...state,
-      isFormOpen: false,
-    };
+    return temp;
   }
 
   if (action.type === "setIsClickedRightInNested") {
@@ -113,6 +109,7 @@ const folderReducer = (state = initialState, action) => {
       isClickedRightForNestedWithId: action.value.id,
     };
   }
+
   return state;
 };
 

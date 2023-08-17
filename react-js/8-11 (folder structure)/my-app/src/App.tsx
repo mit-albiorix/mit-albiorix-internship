@@ -12,15 +12,19 @@ function App() {
   // const [isRootClicked, setisRootClicked] = useState(false);
   const dispatch = useDispatch();
   const foldersdata = useSelector((state: any) => state.folders);
+
   // let finlfoldersdata = foldersdata.map();
-  console.log("fol", foldersdata);
+
   const isFormOpen = useSelector((state: any) => state.isFormOpen);
+
   const handleClickForAddFolder = () => {
     // setisopenForm(true);
-    dispatch({ type: "setisFormOpen" });
+    dispatch({ type: "setisFormOpen", value: true });
 
     dispatch({ type: "isRootClicked", value: true });
   };
+
+  ("isformopen in app start");
 
   return (
     <>
@@ -41,6 +45,7 @@ function App() {
         Add folder to root
       </button>
       <Folders foldersdata={foldersdata} />
+
       {isFormOpen && <Form />}
 
       {/* <FolderStructure folders={folders} /> */}
