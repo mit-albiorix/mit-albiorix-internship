@@ -35,6 +35,10 @@ const folderReducer = (state = initialState, action) => {
     return {
       ...state,
       folders: [...temp],
+      isFormOpen: false,
+      isFileClicked: false,
+      isFolderClicked: false,
+      isRootClicked: false,
     };
   }
   if (action.type === "setRemoveFolder") {
@@ -57,6 +61,10 @@ const folderReducer = (state = initialState, action) => {
     return {
       ...state,
       folders: temp,
+      isFormOpen: false,
+      isFileClicked: false,
+
+      isFolderClicked: false,
     };
   }
   if (action.type === "fileClicked") {
@@ -96,7 +104,6 @@ const folderReducer = (state = initialState, action) => {
   }
 
   if (action.type === "setIsClickedRightInNested") {
-    
     return {
       ...state,
       isClickedRightForNested: action.value.isClicked,

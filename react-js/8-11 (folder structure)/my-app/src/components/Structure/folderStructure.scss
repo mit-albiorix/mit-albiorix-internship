@@ -27,14 +27,27 @@ hr {
 .folderImage {
   width: 15px;
   height: 18px;
+  margin-right: 10px;
+}
+
+.folderName {
+  margin-top: -3px;
+  margin-right: 2px;
 }
 
 .rightButton {
   border: 2px solid $border_color;
   border-radius: $border_radius;
+  background-color: black;
+  color: white;
 }
 
 .cancelButton {
   border: 2px solid $border_color;
   border-radius: $border_radius;
+}
+
+.css-ptiqhd-MuiSvgIcon-root {
+  font-size: 15px !important;
+  margin: 1px !important;
 }

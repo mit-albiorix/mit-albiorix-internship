@@ -51,19 +51,15 @@ function FolderStructure(props: any) {
         <div className="horizontalEle">
           <hr />
 
-          {isFile ? (
-            <img
-              src="https://folder-structure-9dbd4.web.app/assets/file-regular.svg"
-              alt=""
-              className="folderImage"
-            />
-          ) : (
-            <img
-              src="https://folder-structure-9dbd4.web.app/assets/folder-open-regular.svg"
-              alt=""
-              className="folderImage"
-            />
-          )}
+          <img
+            src={
+              isFile
+                ? "https://folder-structure-9dbd4.web.app/assets/file-regular.svg"
+                : "https://folder-structure-9dbd4.web.app/assets/folder-open-regular.svg"
+            }
+            alt=""
+            className="folderImage"
+          />
 
           <span
             className="folderName"

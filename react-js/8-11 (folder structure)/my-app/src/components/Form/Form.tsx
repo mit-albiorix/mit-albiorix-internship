@@ -17,7 +17,7 @@ function Form(props: any) {
   });
   const [errorMessage, setErrorMessage] = useState("");
   const isFileClicked = useSelector((state: any) => state.isFileClicked);
-  const isFolderClicked = useSelector((state: any) => state.isFolderClicked);
+
   const clickedFolderId = useSelector((state: any) => state.clickedFolderId);
 
   const unique_id = uuid();
@@ -32,7 +32,8 @@ function Form(props: any) {
     }));
   };
 
-  const handleRight = () => {
+  const handleRight = (e: any) => {
+    e.preventDefault();
     if (inputName.fname.length == 0) {
       if (isFileClicked) {
         setErrorMessage("File name is required");
@@ -42,23 +43,16 @@ function Form(props: any) {
     } else {
       dispatch({ type: "addfolders", value: inputName });
 
-      dispatch({ type: "setisFormOpen", value: false });
-      dispatch({ type: "fileClicked", value: false });
-      dispatch({ type: "folderClicked", value: false });
       dispatch({
         type: "setIsClickedRightInNested",
         value: { isClicked: false, id: null },
       });
 
-      dispatch({ type: "isRootClicked", value: false });
       setInputName("");
     }
   };
 
   const handleCancel = () => {
-    dispatch({ type: "setisFormOpen", value: false });
-    dispatch({ type: "fileClicked", value: false });
-    dispatch({ type: "folderClicked", value: false });
     dispatch({
       type: "setIsClickedRightInNested",
       value: { isClicked: false, id: null },
@@ -69,21 +63,22 @@ function Form(props: any) {
     <>
       {}
       <div className="folderContainer">
-        <form className="folderForm">
-          {isFileClicked && (
-            <img
-              src="https://folder-structure-9dbd4.web.app/assets/file-regular.svg"
-              alt=""
-              className="folderImage"
-            />
-          )}
-          {isFolderClicked && (
-            <img
-              src="https://folder-structure-9dbd4.web.app/assets/folder-open-regular.svg"
-              alt=""
-              className="folderImg"
-            />
-          )}
+        <form
+          className="folderForm"
+          onSubmit={(e) => {
+            handleRight(e);
+          }}
+        >
+          <img
+            src={
+              isFileClicked
+                ? "https://folder-structure-9dbd4.web.app/assets/file-regular.svg"
+                : "https://folder-structure-9dbd4.web.app/assets/folder-open-regular.svg"
+            }
+            alt=""
+            className="folderImage"
+          />
+
           <input
             type="text"
             className="inputForFolder"
@@ -94,7 +89,9 @@ function Form(props: any) {
           <CheckOutlinedIcon
             fontSize="small"
             className="rightMark"
-            onClick={handleRight}
+            onClick={(e) => {
+              handleRight(e);
+            }}
           />
           <ClearOutlinedIcon
             fontSize="small"
