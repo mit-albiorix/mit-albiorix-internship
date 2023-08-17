@@ -1,4 +1,3 @@
-import React from "react";
 import "../Structure/folderStructure.scss";
 import { useState } from "react";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
@@ -9,11 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 function FolderStructure(props: any) {
   const [isFocused, setisFocused] = useState(false);
 
-  // const [isClickedRight, setIsClickedRight] = useState(false);
-
   const dispatch = useDispatch();
-  const isFileClicked = useSelector((state: any) => state.isFileClicked);
-  const isFolderClicked = useSelector((state: any) => state.isFolderClicked);
+
   const { folder, folderId, isFile } = props;
 
   const isClickedRight = useSelector(
@@ -24,11 +20,7 @@ function FolderStructure(props: any) {
     (state: any) => state.isClickedRightForNestedWithId
   );
 
- 
   const matchedFolder = folderId === isClickedRightWithId;
-
-
-  const clickedFolder = useSelector((state: any) => state.clickedFolder);
 
   const checkClickHandler = (folder: any) => {
     let tempClickedObj = {
@@ -45,7 +37,6 @@ function FolderStructure(props: any) {
   };
 
   const cancelClickHandler = () => {
-
     let tempRemove = {
       name: folder,
       id: folderId,
@@ -53,7 +44,6 @@ function FolderStructure(props: any) {
 
     dispatch({ type: "setRemoveFolder", value: tempRemove });
   };
-
 
   return (
     <>
@@ -110,8 +100,6 @@ function FolderStructure(props: any) {
       </div>
 
       {isClickedRight && matchedFolder && <NestedFolderStructure />}
-
-      {/* <hr /> */}
     </>
   );
 }

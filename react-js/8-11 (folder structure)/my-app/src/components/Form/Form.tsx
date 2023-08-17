@@ -1,21 +1,21 @@
 import React, { useState } from "react";
-// import "../Form/Form.css";
+
 import "../Form/Form.scss";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
-import ClearIcon from "@mui/icons-material/Clear";
+
 import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
 import { useDispatch, useSelector } from "react-redux/es/exports";
 import { v4 as uuid } from "uuid";
 
 function Form(props: any) {
-  const { setisopenForm } = props;
   const [inputName, setInputName] = useState<any>({
     fname: "",
     id: null,
     parent_id: null,
-    // isClickedRightForNested: false,
+
     child: [],
   });
+  const [errorMessage, setErrorMessage] = useState("");
   const isFileClicked = useSelector((state: any) => state.isFileClicked);
   const isFolderClicked = useSelector((state: any) => state.isFolderClicked);
   const clickedFolderId = useSelector((state: any) => state.clickedFolderId);
@@ -23,7 +23,7 @@ function Form(props: any) {
   const unique_id = uuid();
   const dispatch = useDispatch();
   const handleChange = (e: any) => {
-    setInputName((prev: any) => ({
+    setInputName(() => ({
       ...inputName,
       fname: e.target.value,
       id: unique_id,
@@ -33,20 +33,26 @@ function Form(props: any) {
   };
 
   const handleRight = () => {
-    // setFolders([...folders, inputName]);
-    dispatch({ type: "addfolders", value: inputName });
+    if (inputName.fname.length == 0) {
+      if (isFileClicked) {
+        setErrorMessage("File name is required");
+      } else {
+        setErrorMessage("Folder name is required");
+      }
+    } else {
+      dispatch({ type: "addfolders", value: inputName });
 
-    dispatch({ type: "setisFormOpen", value: false });
-    dispatch({ type: "fileClicked", value: false });
-    dispatch({ type: "folderClicked", value: false });
-    dispatch({
-      type: "setIsClickedRightInNested",
-      value: { isClicked: false, id: null },
-    });
-    // dispatch({ type: "isClickedRightForNestedWithI", value: false });
+      dispatch({ type: "setisFormOpen", value: false });
+      dispatch({ type: "fileClicked", value: false });
+      dispatch({ type: "folderClicked", value: false });
+      dispatch({
+        type: "setIsClickedRightInNested",
+        value: { isClicked: false, id: null },
+      });
 
-    dispatch({ type: "isRootClicked", value: false });
-    setInputName("");
+      dispatch({ type: "isRootClicked", value: false });
+      setInputName("");
+    }
   };
 
   const handleCancel = () => {
@@ -57,7 +63,6 @@ function Form(props: any) {
       type: "setIsClickedRightInNested",
       value: { isClicked: false, id: null },
     });
-    // setInputName("");
   };
 
   return (
@@ -79,13 +84,13 @@ function Form(props: any) {
               className="folderImg"
             />
           )}
-
           <input
             type="text"
             className="inputForFolder"
             value={inputName.fname}
             onChange={handleChange}
           />
+
           <CheckOutlinedIcon
             fontSize="small"
             className="rightMark"
@@ -97,6 +102,9 @@ function Form(props: any) {
             onClick={handleCancel}
           />
         </form>
+        {errorMessage.length > 0 && (
+          <span className="error">{errorMessage}</span>
+        )}
       </div>
     </>
   );

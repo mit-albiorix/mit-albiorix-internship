@@ -1,0 +1,16 @@
+$background_color: black;
+$textcolor: white ;
+
+
+.header {
+  text-align: center;
+
+  background-color: $background_color;
+  color: $textcolor;
+}
+
+.rootButton {
+  background-color: $background_color;
+  color: $textcolor;
+  margin-left: 10pxs;
+}

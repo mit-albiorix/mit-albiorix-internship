@@ -1,10 +1,9 @@
 $border_color: black;
 
 .folderContainer {
-  // margin: 15px;
   border: 2px solid $border_color;
   width: 320px;
-  // height: 40px;
+
   padding: 4px;
 }
 
@@ -12,21 +11,13 @@ $border_color: black;
   display: flex;
   justify-content: center;
   align-items: center;
-  // margin-top: 10px;
 }
 .folderImg {
   width: 15px;
-  /* height: 15px; */
   margin-right: 7px;
-  /* margin-top: 16px; */
-  /* margin-left: 21px; */
 }
 
-.inputForFolder {
-  /* margin-bottom: 10px !important; */
-}
 .rightMark {
-  /* height: 10px; */
   border: 2px solid $border_color;
   margin-left: 4px;
   margin-right: 4px;
@@ -34,4 +25,10 @@ $border_color: black;
 
 .cancelMark {
   border: 2px solid $border_color;
+}
+
+.error {
+  color: red;
+  display: flex;
+  justify-content: center;
 }

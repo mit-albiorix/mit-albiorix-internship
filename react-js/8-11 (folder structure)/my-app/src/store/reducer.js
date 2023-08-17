@@ -1,5 +1,3 @@
-// import { match } from "assert";
-// import { match } from "assert";
 import { createStore } from "redux";
 
 const initialState = {
@@ -20,7 +18,6 @@ const folderReducer = (state = initialState, action) => {
     if (state.isRootClicked) {
       temp = [...state.folders, action.value];
     } else {
-      // let matchedparent = findSubroute(allparentsarray);
       function findSubroute(foldersArray) {
         for (let i = 0; i < foldersArray?.length; i++) {
           if (foldersArray[i].id === state.clickedFolderId) {
@@ -34,8 +31,6 @@ const folderReducer = (state = initialState, action) => {
 
       let matchedparent = findSubroute(temp);
     }
-
-    
 
     return {
       ...state,
@@ -101,8 +96,7 @@ const folderReducer = (state = initialState, action) => {
   }
 
   if (action.type === "setIsClickedRightInNested") {
-    // let tempfoldersdata = [...state.folders]
-    // tempfoldersdata = [...tempfoldersdata,isClickedRightForNested]
+    
     return {
       ...state,
       isClickedRightForNested: action.value.isClicked,
